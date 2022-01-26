@@ -30,7 +30,7 @@ def CLI():
     userInputName = input("Please Specify The UserName First : ")
     userInputPassword = getpass("Then is the Password : ")
     if os.popen("whoami").read().replace("\n","") == "root":
-        userInputAuthority = input(f"Detect that you are The root\nThen you can specify the Authority of {userInputName} : ")
+        userInputAuthority = input(f"Detect that you are using root to start JessiseDB\nThen you can specify the Authority of {userInputName} : ")
         Register = UserRegister(UserName=userInputName,Password=userInputPassword,Authority=userInputAuthority)
         Register.DoRegiest()
         print(f"User {userInputName} has been Created!")
