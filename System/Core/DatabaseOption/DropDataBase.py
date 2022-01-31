@@ -9,4 +9,4 @@ class DropDataBase:
                 print(f"Database {self.targetBase} has been successfully delete!Operation Done at {datetime.now()}")
                 os.removedirs(f'../../../Data/{self.targetBase}')
             else:
-                print("None Exists Database name,Drop Failed!")
+                print("Invalid Exists Database name,Drop Failed!")

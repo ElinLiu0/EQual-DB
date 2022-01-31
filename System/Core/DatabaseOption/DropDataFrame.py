@@ -1,17 +1,16 @@
 import os
 from datetime import datetime
-base_list = None
-for root,path,file in os.walk("../../../Data/"):
-            base_list = path
 class DropDataFrame:   
-    def __init__(self,targetFrame) -> None:     
+    # Respicify the DropDataFrame Method
+    # With Specify the targetDataBase to reduce more for loops file check 
+    # to save the response time
+    def __init__(self,targetBase,targetFrame) -> None:
+        self.targetBase = targetBase
         self.targetFrame = targetFrame           
     def Drop(self):
-        for i in base_list:
-            for root,base,frame in os.walk(f"../../../Data/{i}"):
-                for j in frame:
-                    if self.targetFrame in frame:
-                        print(f"Dataframe {self.targetFrame} has been removed from database {i},Operation Done at {datetime.now()}")
-                        os.remove(f"../../../Data/{i}/{self.targetFrame}.df")
+        if os.path.exists(f"../../../Data/{self.targetBase}/{self.targetFrame}.df"):
+            os.remove(f"../../../Data/{self.targetBase}/{self.targetFrame}.df")
+        else:
+            print(f"Invalid dataFrame specified!Drop operation refuesed!")
 
         
