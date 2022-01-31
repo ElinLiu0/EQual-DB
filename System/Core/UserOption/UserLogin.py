@@ -3,6 +3,7 @@ import json
 from getpass import getpass
 import os
 from datetime import datetime
+from ..InterFace import Shell
 class UserLogin:
     def __init__(self,gotUserName,gotPassword) -> None:
         self.gotUserName = gotUserName
@@ -30,6 +31,7 @@ class UserLogin:
         userInfo_Json = self.userCheck()
         if sha256(self.gotPassword.encode('utf-8')).hexdigest() == userInfo_Json['password']:
             print(f"As user {self.gotUserName} login sucess!Last login at {datetime.now()}")
+            Shell.userShell.Shell()
         elif self.gotPassword == None:
             print("Invalid password input,Login Denied!")
         else:

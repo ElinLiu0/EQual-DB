@@ -9,7 +9,7 @@ class SpeedTest:
         wSpeed = []
         rSpeed = []
         for i in range(60):
-            wSpeed.append(pt.disk_io_counters(perdisk=False,nowrap=True).read_bytes)
+            wSpeed.append(pt.disk_io_counters(perdisk=False,nowrap=True).write_bytes)
             rSpeed.append(pt.disk_io_counters(perdisk=False,nowrap=True).read_bytes)
             time.sleep(1)
         print("Testloop 1 min done!Result as shown below:\n")
