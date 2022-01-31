@@ -21,3 +21,4 @@ Finally,if you wanna just joined my project,here are my contact:
     - Mail : 982467922@qq.com
 
     - Discord : ElinLiu
+Will be support CUDA™ RAPIDS GPU Accelerate support,stay tune
