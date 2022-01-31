@@ -1,5 +1,5 @@
 from pyfiglet import Figlet
-def CurrentVesion() -> str:
+def CurrentVersion() -> str:
     log_font = Figlet(font='slant')
     print(log_font.renderText('JessieDB'))
     print("-----------------------------")

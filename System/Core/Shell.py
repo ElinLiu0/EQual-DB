@@ -1,39 +1,39 @@
 # BUG : Currently can not import the script files from DatabaseOption Folders
-from ..DatabaseOption.CreateDataBase import CreateDataBase
-from ..DatabaseOption.CreateDataFrame import CreateDataFrame
-from ..DatabaseOption.CurrentVersion import CurrentVersion
-from ..DatabaseOption.DropDataBase import DropDataBase
-from ..DatabaseOption.DropDataFrame import DropDataFrame
-from ..DatabaseOption.ImportData import ImportData
-from ..DatabaseOption.ShowDataBases import ShowDataBases
-from ..UserAssign import UserRegister
-from ..DatabaseOption.DiskUsage import showUsage
-from ..DatabaseOption.DataFrameRecover import DataFrameRecover
-from ..Test.Speedtest import SpeedTest
+from errno import EROFS
+from DatabaseOption.CreateDataBase import CreateDataBase
+from DatabaseOption.CreateDataFrame import CreateDataFrame
+from DatabaseOption.CurrentVersion import CurrentVersion
+from DatabaseOption.DropDataBase import DropDataBase
+from DatabaseOption.DropDataFrame import DropDataFrame
+from DatabaseOption.ImportData import ImportData
+from DatabaseOption.ShowDataBases import ShowDataBases
+from DatabaseOption.ShowDataFrame import ShowDataFrames
+from UserOption.UserAssign import UserRegister
+from DatabaseOption.DiskUsage import ShowUsage
+from DatabaseOption.DataFrameRecover import DataFrameRecover
+from Test.Speedtest import SpeedTest
 from getpass import getpass
 import re
 import os
-class userShell:
-    def __init__(self) -> None:
-        pass
-    def Shell(self):
-        # This Variable were prepared for use function and select function yet
-        frame_list = None
-        while True:
+def Shell():
+    # This Variable were prepared for use function and select function yet
+    frame_list = None
+    while True:
+        try:
             recieve = input("DB Shell >>> : ")
             if recieve in ["quit","quit()"]:
                 print('Good Bye!')
                 break
             # This CLI Command Should Like : CREATE DATABASE 'database_name',
             # and system will automatically makeing.
-            if re.match("CREATE DATABASE",recieve).span() != None:
+            elif re.match("CREATE DATABASE",recieve) != None:
                 try:
                     boot = CreateDataBase(BaseName=recieve[16:])
                     boot.Make()
                 except Exception as Error:
                     print(f"ERR : Couldnt build a database,cause by error below : \n{str(Error)}")
             # This method is should Create a blank dataframe for the database which specified as keyword
-            if re.match("CREATE DATAFRAME FOR",recieve).span() != None:
+            elif re.match("CREATE DATAFRAME FOR",recieve) != None:
                 startIndex = recieve.index("DATAFRAME")+len("DATAFRAME")
                 IndexFor = recieve.index("FOR")+len("FOR")
                 IndexWith = recieve.index("WITH")
@@ -45,10 +45,10 @@ class userShell:
                 data = recieve[IndexWithStart : ]
                 boot = CreateDataFrame(database=dataBase,frameName=dataFrame,data=data)
                 boot.Create()
-            if recieve == "TEMP VERSION":
-                CurrentVersion.CurrentVesion()
+            elif recieve == "TEMP VERSION":
+                CurrentVersion()
             # The Full CLI Command Should Like : IMPORT DATA FROM 'sourcePath' TO 'database'.'dataframe WITH 'encoder'
-            if re.match("IMPORT DATA FROM",recieve).span() != None:
+            elif re.match("IMPORT DATA FROM",recieve) != None:
                 try:
                     fromIndex = recieve.index("FROM")
                     ToIndex = recieve.index("TO")
@@ -61,10 +61,20 @@ class userShell:
                     ImportData(sourcePath=sourcePath,targetDataBase=targetBase,frameName=targetFrame,encoder=encoder)
                 except Exception as Error:
                     print(f"ERR : During importing data from sourcepath : {sourcePath},there was error occured cause by below:\n{str(Error)}")
-            if recieve == "SHOW DATABASES":
-                ShowDataBases.ShowDataBases().showInfo()
+            elif recieve == "SHOW DATABASES":
+                try:
+                    boot = ShowDataBases()
+                    boot.showInfo()
+                except Exception as Error:
+                    print(f"ERR : Could not load the databases folder because : {str(Error)}")
+            elif recieve == "SHOW DATAFRAMES":
+                try:
+                    boot = ShowDataFrames()
+                    boot.showInfo()
+                except Exception as Error:
+                    print(F"ERR : Colud not show dataframe trees because :\n{str(Error)}")
             # The CLI Command Line Should be like : ADD USER 'user_name' TO 'user_group(admin or nonadmin)'
-            if re.match("ADD USER",recieve).span() != None:
+            elif re.match("ADD USER",recieve) != None:
                 if os.popen("whoami").read().replace("\n","") == "root":
                     startIndex = recieve.index("USER")
                     endIndex = recieve.index("TO")
@@ -76,12 +86,14 @@ class userShell:
                         boot.DoRegiest()
                     except Exception as Error:
                         print(f"ERR : During creating user {addUserName},there was an error caused by : {Error}")
-            if recieve == "SHOW DISK USAGE":
-                showUsage()
-            if recieve == "SHOW DATABASES":
-                ShowDataBases.ShowDataBases()
+            elif recieve == "SHOW DISK USAGE":
+                try:
+                    boot = ShowUsage()
+                    boot.showUsage()
+                except Exception as Error:
+                    print(f"ERR : During checkout the disk partition usage,there was error caused by :\n{str(Error)}")
             # The CLI Command Line should like : RECOVER 'targetDataBase.targetDataFrame'
-            if re.match("RECOVER",recieve).span() != None:
+            elif re.match("RECOVER",recieve) != None:
                 dotIndex = recieve.index(".")
                 targetBase = recieve[:dotIndex].replace("RECOVER ","")
                 targetFrame = recieve[dotIndex + 1 : ]
@@ -89,16 +101,25 @@ class userShell:
                     DataFrameRecover(targetDataBase=targetBase,targetDataFrame=targetFrame)
                 except Exception as Error:
                     print(f"ERR : Cant roll back the dataframe to before vesion caused by : {str(Error)}")
-            if re.match("DROP DATABASE",recieve).span() != None:
+            elif re.match("DROP DATABASE",recieve) != None:
                 targetDataBase = recieve[recieve.index('DATABASE') : ]
-                DropDataBase(targetBase=targetDataBase)
+                try:
+                    DropDataBase(targetBase=targetDataBase)
+                except Exception as Error:
+                    print(f"ERR : During Dropping database : {targetDataBase},there was error occured by : {str(Error)}")
             # The Drop DataFrame CLI Should Like : DROP DATAFRAME 'database'.'dataframe'
-            if re.match("DROP DATAFRAME",recieve).span() != None:
+            elif re.match("DROP DATAFRAME",recieve) != None:
                 dotIndex = recieve.index(".")
                 targetFrame = recieve[dotIndex :].replace(" ","")
                 targetBase = recieve[:dotIndex].replace("DROP DATAFRAME ","")
-                DropDataFrame(targetBase=targetBase,targetFrame=targetFrame)
-            if recieve == "SPEEDTEST":
-                SpeedTest.test()
-
-userShell.Shell()
+                try:
+                    DropDataFrame(targetBase=targetBase,targetFrame=targetFrame)
+                except Exception as Error:
+                    print(f"ERR : During Drooping dataframe {targetBase}.{targetFrame},there was an error caused by : {str(Error)}")
+            elif recieve == "SPEEDTEST":
+                boot = SpeedTest()
+                boot.test()
+            else:
+                print("ERR : Unsupported shell command input!Operation refused!")
+        except Exception as Error:
+            print(f"ERR : Shell prompt has occured error : {str(Error)}")

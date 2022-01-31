@@ -6,6 +6,6 @@ class UseDataBase:
         self.targetBase = targetBase
     def useBase(self):
         frameList = None
-        for root,path,files in os.walk(f"../../../Data/{self.targetBase}"):
+        for root,path,files in os.walk(f"../../Data/{self.targetBase}"):
             frameList = files
         return frameList
