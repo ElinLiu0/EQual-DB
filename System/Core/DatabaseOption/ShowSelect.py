@@ -1,4 +1,4 @@
-import dask.dataframe as dd
+# update :  For the compatibility to give up use DASK API
 from tabulate import tabulate
 import pandas as pd
 class ShowSelect:
@@ -14,11 +14,11 @@ class ShowSelect:
         global df
         df = pd.read_json(f"../../{self.targetBase}/{self.targetFrame}.df")       
     def shown(self):
-        dask_proc = dd.from_pandas(df)
         if self.colRange == "*":
-            shownFrame = tabulate(dask_proc.compute(),headers=self.headers,tablefmt=self.tablefmt)
+            # use Pandas DataFrame Directly from Memory 
+            shownFrame = tabulate(df,headers=self.headers,tablefmt=self.tablefmt)
         elif type(self.colRange) == str and self.colRange != "*":
-            shownFrame = tabulate(dask_proc[self.colRange].compute(),headers=self.headers,tablefmt=self.tablefmt)
+            shownFrame = tabulate(df[self.colRange],headers=self.headers,tablefmt=self.tablefmt)
         elif type(self.colRange) == list:
             shownFrame = tabulate(df.loc[:,self.colRange],headers=self.headers,tablefmt=self.tablefmt)
         print(shownFrame)
@@ -36,4 +36,4 @@ class ShowSelect:
             except Exception:
                 pass
         # Do calculation 
-        # ...
+        # 

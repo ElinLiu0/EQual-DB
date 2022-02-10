@@ -10,6 +10,7 @@ class DropDataFrame:
     def Drop(self):
         if os.path.exists(f"../../Data/{self.targetBase}/{self.targetFrame}.df"):
             os.remove(f"../../Data/{self.targetBase}/{self.targetFrame}.df")
+            print(f"Successfully remove dataframe {self.targetFrame}")
         else:
             print(f"Invalid dataFrame specified!Drop operation refuesed!")
 

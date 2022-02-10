@@ -1,11 +1,13 @@
 import os
-
-from importlib_metadata import files
 class UseDataBase:
     def __init__(self,targetBase) -> None:
         self.targetBase = targetBase
     def useBase(self):
-        frameList = None
-        for root,path,files in os.walk(f"../../Data/{self.targetBase}"):
-            frameList = files
-        return frameList
+        DataBaseList = []
+        for root,path,files in os.walk(f"../../Data"):
+            for i in path:
+                DataBaseList.append(i)
+        if self.targetBase in DataBaseList:
+            return True
+        else:
+            return False
