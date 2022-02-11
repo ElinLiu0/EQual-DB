@@ -1,3 +1,6 @@
+from numpy import extract
+
+
 print("Initalizing Moudles ...")
 try:
     from DatabaseOption.CreateDataBase import CreateDataBase
@@ -12,6 +15,7 @@ try:
     from DatabaseOption.DiskUsage import ShowUsage
     from DatabaseOption.DataFrameRecover import DataFrameRecover
     from DatabaseOption.UseDataBase import UseDataBase
+    from DatabaseOption.ShowSelect import ShowSelect
     from Test.Speedtest import SpeedTest
     from getpass import getpass
     import re
@@ -70,8 +74,7 @@ def Shell():
             elif recieve == "SHOW DATABASES":
                 try:
                     boot = ShowDataBases()
-                    boot.showInfo()
-                    
+                    boot.showInfo()                 
                 except Exception as Error:
                     print(f"ERR : Could not load the databases folder because : {str(Error)}")
             elif recieve == "SHOW DATAFRAMES":
@@ -98,8 +101,7 @@ def Shell():
             elif recieve == "SHOW DISK USAGE":
                 try:
                     boot = ShowUsage()
-                    boot.showUsage()
-                    
+                    boot.showUsage()                 
                 except Exception as Error:
                     print(f"ERR : During checkout the disk partition usage,there was error caused by :\n{str(Error)}")                 
             # The CLI Command Line should like : RECOVER 'targetDataBase.targetDataFrame'
@@ -108,8 +110,7 @@ def Shell():
                 targetBase = recieve[:dotIndex].replace("RECOVER ","")
                 targetFrame = recieve[dotIndex + 1 : ]
                 try:
-                    DataFrameRecover(targetDataBase=targetBase,targetDataFrame=targetFrame)
-                    
+                    DataFrameRecover(targetDataBase=targetBase,targetDataFrame=targetFrame)                   
                 except Exception as Error:
                     print(f"ERR : Cant roll back the dataframe to before vesion caused by : {str(Error)}")
                     
@@ -139,7 +140,50 @@ def Shell():
                     print(f"Invalid Specified Database name :{dataBaseUsed},please check that is really exist?")
             elif recieve == "SPEEDTEST":
                 boot = SpeedTest()
-                boot.test()               
+                boot.test()   
+            elif re.match("SELECT",recieve) != None:
+                # Defaultly CLI command should like a normal sql like command 
+                # Example : SELECT * FROM {frame_name}
+                fromIndex = recieve.index('FROM')
+                extract =  recieve[recieve.index('SELECT') + len('SELECT') : fromIndex] 
+                usingFrame = recieve[fromIndex + 4:]
+                # With limitation example should like 
+                # Example : SELECT * FROM {frame_name} LIMIT {an integer limitation,
+                # default 5000,can over it if need!}
+                if "LIMIT" in recieve:
+                    limitIndex = recieve.index("LIMIT")
+                    limitation = int(recieve[limitIndex + len('LIMIT') :])
+                else:
+                    pass
+                try:
+                    if limitation != None:
+                        if caching_database != None:
+                            boot = ShowSelect(targetBase=caching_database,targetFrame=usingFrame,colRange=extract,limation=limitation)
+                    else:
+                        if caching_database != None:
+                            boot = ShowSelect(targetBase=caching_database,targetFrame=usingFrame,colRange=extract)
+                    # Do mathmetic checking
+                    # This method allows user do multiple complex mathmetic functions
+                    # But the coloumns should default with 'df' on it or API wouldnt do the process
+                    # such as : SELECT df['a']+df['b'] FROM {frame_name}
+                    math_symblos = ["*","^","-","+","/","%","//"]
+                    for i in extract:
+                        # if mathmetic symbols in extract command areas
+                        if i in math_symblos:
+                            # Then do mathShown() methods
+                            boot.mathShown()
+                    # Do lambda checking
+                    # This method allows user wrote a full lambda expression to use
+                    # Just like the normal way you do on Pandas
+                    # such as : SELECT df['tf'] = df['yn'].apply(lambda x:True if x == 'yes' else False) FROM {frame_name}
+                    if "lambda" in extract:
+                        boot.lambdaShown()
+                except Exception as Error:
+                    print(f"ERR : During doing selection on {usingFrame},there was an error caused by below : \n{str(Error)}")
+            elif recieve == "WHICH BASE":
+                # This command could tell the user that which database now caching in memory
+                # To activate the caching_database variable,need to use "USE DATABASE" func first
+                print(f"Currently caching with database : {caching_database}")       
             else:
                 print("ERR : Unsupported shell command input!Operation refused!")   
             end_time = time.time()
