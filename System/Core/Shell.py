@@ -77,7 +77,7 @@ def Shell():
                         # This usallly need to a database create before
                         # for example : IMPORT DATA FROM {url_path} TO test.test WITH UTF-8
                         # thats need you exist database test before importing data.
-                        boot = ImportData(sourcePath=sourcePath,targetDataBase=targetBase,frameName=targetFrame,encoder=encoder)
+                        boot = ImportData(sourcePath=sourcePath,targetDataBase=targetBase,frameName=targetFrame,encoder=encoder,userAuthority=UserInfo['authority'])
                         boot.Processing()
                     except Exception as Error:
                         print(f"ERR : During importing data from sourcepath : {sourcePath},there was error occured cause by below:\n{str(Error)}")
