@@ -1,9 +1,7 @@
 from hashlib import sha256
 import json
-from getpass import getpass
 import os
 from datetime import datetime
-from Shell import Shell
 class UserLogin:
     def __init__(self,gotUserName,gotPassword) -> None:
         self.gotUserName = gotUserName
@@ -31,14 +29,9 @@ class UserLogin:
         userInfo_Json = self.userCheck()
         if sha256(self.gotPassword.encode('utf-8')).hexdigest() == userInfo_Json['password']:
             print(f"As user {self.gotUserName} login sucess!Last login at {datetime.now()}")
-            Shell()
+            return userInfo_Json
         elif self.gotPassword == None:
             print("Invalid password input,Login Denied!")
         else:
             print("Uncorrect password certification,Login Denied!")
-def loginShell():
-    gotUserName = input("Type user name here : ")
-    gotPassword = getpass("Type password here : ")
-    userLogin = UserLogin(gotUserName=gotUserName,gotPassword=gotPassword)
-    userLogin.login()
-loginShell()
+        
