@@ -1,24 +1,10 @@
-Hi ! The Developer from wherever that i know.
+This is the Beta Test branch of JessiseDB.
 
-If you have viewed this repository that i would like say,Huge thanks to you!
+You can point out whatever issuse that you find out.
 
-As you see in the description,yeah.Kind been nut but i really wanna achive this.
+Also you can join my porject to help me improve JessiseDB Better.
 
-This is probably a contract with my sister who is my MongoDB teacher.
-
-I had make a contract with her that is use her name to create a New type database
-
-with her name and give her a suprise.
-
-Whatever this project well going,whoever that joined,
-
-i would like to say : thank u!
-
-Finally,if you wanna just joined my project,here are my contact:
-
-    - QQ (Download on https://office.qq.com/download.html) : 982467922
-
-    - Mail : 982467922@qq.com
-
-    - Discord : ElinLiu
-Will be support CUDA™ RAPIDS GPU Accelerate support,stay tune
+- Current Update History
+  - 2022/2/16 17:46 : Fix the dataframe stroage formation. From begining string json files into Binary File
+  - 2022/2/14 : Fix the user login logic and all the Function are now intergreted in to one Shell.py File
+  - 2022/2/11 : Upgrade the selection function files in DatabaseOption called ShowSelect.py
