@@ -1,6 +1,8 @@
 # update :  For the compatibility to give up use DASK API
+from copyreg import pickle
 from tabulate import tabulate
 import pandas as pd
+import json
 class ShowSelect:
     def __init__(self,targetBase,targetFrame,colRange,limation=5000) -> None:
         # in default,this varaiable would be loading the caching database from shell.py
@@ -14,7 +16,9 @@ class ShowSelect:
     def read_data(self):
         global df
         try:
-            df = pd.read_json(f"../../{self.targetBase}/{self.targetFrame}.df")  
+            with open(f"../../{self.targetBase}/{self.targetFrame}.df") as db_reader:
+              data = [pickle.load(db_reader)]  
+            df = pd.DataFrame(data)
         except Exception as Error:
             print(f"ERR : Not found dataframe {self.targetFrame} in caching base.Operation refused!")     
     def shown(self):

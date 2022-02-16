@@ -1,8 +1,8 @@
 # Update : Give up to using Dask API For compatbility
 import os
 from datetime import datetime
-from stat import *
 import pandas as pd
+import pickle
 class CreateDataFrame:
     def __init__(self,database,frameName,data):
         self.frameName = frameName
@@ -11,11 +11,11 @@ class CreateDataFrame:
     def Create(self):
         exec("self.data="+self.data)
         df = pd.DataFrame(self.data)
-        df.to_json(f"../../Data/{self.database}/{self.frameName}.df",orient="split")
-        with open(f"../../Data/{self.database}/{self.frameName}.rc","w") as recover:
-            recover.write(f"Recover Chekup create at : {datetime.now()}\n")
-            recover.write(df.to_json(orient="split"))
-        if os.path.exists(f"../../../Data/{self.database}/{self.frameName}.rc"):
-            os.chmod(f"../../../Data/{self.database}/{self.frameName}.rc",mode=S_IREAD)
-        if os.path.exists(f"../../../Data/{self.database}/{self.frameName}.rc"):
-            os.chmod(f"../../../Data/{self.database}/{self.frameName}.rc",mode=S_IREAD)
+        data = df.to_json(orient="split")
+        with open(f"../../Data/{self.database}/{self.frameName}.df","wb") as db_writer:
+            pickle.dump(data,db_writer)
+        db_writer.close()
+        with open(f"../../Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
+            pickle.dump(f"Recover Chekup create at : {datetime.now()}\n")
+            pickle.dump(df.to_json(orient="split"))
+        recover_writter.close()
