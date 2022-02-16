@@ -16,6 +16,6 @@ class CreateDataFrame:
             pickle.dump(data,db_writer)
         db_writer.close()
         with open(f"../../Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
-            pickle.dump(f"Recover Chekup create at : {datetime.now()}\n",recover_writter)
-            pickle.dump(df.to_json(orient="split"),recover_writter)
+            pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}",recover_writter)
+            # pickle.dump(data,recover_writter)
         recover_writter.close()
