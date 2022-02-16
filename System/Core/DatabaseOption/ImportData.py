@@ -19,8 +19,7 @@ class ImportData:
                     pickle.dump(data,db_writer)
                 db_writer.close()
                 with open(f"../../Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
-                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n")
-                    pickle.dump(df.to_json(orient="split"))
+                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
             if ".excel" in self.sourcePath:
                 df = pd.read_excel(self.sourcePath,enconding=self.encoder)
@@ -29,8 +28,7 @@ class ImportData:
                     pickle.dump(data,db_writer)
                 db_writer.close()
                 with open(f"../../Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
-                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n")
-                    pickle.dump(df.to_json(orient="split"))
+                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
             if "http://" in self.sourcePath:
                 df = pd.read_html(self.sourcePath)[0]
@@ -40,8 +38,7 @@ class ImportData:
                     pickle.dump(data,db_writer)
                 db_writer.close()
                 with open(f"../../Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
-                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n")
-                    pickle.dump(df.to_json(orient="split"))
+                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
             if ".sql" in self.sourcePath:
                 df = pd.read_sql(self.sourcePath)
@@ -51,8 +48,7 @@ class ImportData:
                     pickle.dump(data,db_writer)
                 db_writer.close()
                 with open(f"../../Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
-                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n")
-                    pickle.dump(df.to_json(orient="split"))
+                    pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
             else:
                 print("Unsupported source datatype,refused!")
