@@ -17,7 +17,7 @@ class ShowSelect:
         global df
         try:
             with open(f"../../{self.targetBase}/{self.targetFrame}.df") as db_reader:
-              data = [pickle.load(db_reader)]  
+              data = [json.loads(pickle.load(db_reader))]  
             df = pd.DataFrame(data)
         except Exception as Error:
             print(f"ERR : Not found dataframe {self.targetFrame} in caching base.Operation refused!")     
