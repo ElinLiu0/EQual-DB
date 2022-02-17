@@ -20,7 +20,7 @@ class ShowDataFrames:
                     FrameModifyTime.append(ctime(os.stat(f'../../Data/{self.targetBase}/{i}').st_ctime))
                     FrameSizeList.append(os.stat(f'../../Data/{self.targetBase}/{i}').st_size)
                     FrameCreateBy.append(pwd.getpwuid(os.stat(f'../../../Data/{self.targetBase}/{i}').st_uid))
-                    tmp = open(f'../../Data/{self.targetBase}/{i}')
+                    tmp = open(f'../../Data/{self.targetBase}/{i}',"rb")
                     data = tmp.read()
                     FrameEncoding.append(chardet.detect(data)['encoding'])
             InfoTable.add_column('DataFrameName',FrameList)

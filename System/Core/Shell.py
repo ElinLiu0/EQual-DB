@@ -89,7 +89,7 @@ def Shell():
                         print(f"ERR : Could not load the databases folder because : {str(Error)}")
                 elif recieve == "SHOW DATAFRAMES":
                     try:
-                        boot = ShowDataFrames()
+                        boot = ShowDataFrames(targetBase=caching_database)
                         boot.showInfo()    
                     except Exception as Error:
                         print(F"ERR : Colud not show dataframe trees because :\n{str(Error)}")
