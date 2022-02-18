@@ -3,7 +3,7 @@ class ShowUsage:
     def __init__(self) -> None:
         pass
     def showUsage(self):
-        usage = float(os.popen("du -bs ../../Data").read()[:os.popen("du -bs ../../Data").read().index(".")])
+        usage = float(os.popen("du -bs ./Data").read()[:os.popen("du -bs ./Data").read().index(".")])
         if usage // 1024 == 0:
             print(f"Total data path usage : {round(usage / 1024,2)} KiB")
         elif usage // 1024 // 1024 == 0:

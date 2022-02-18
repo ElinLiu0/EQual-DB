@@ -12,11 +12,11 @@ class ShowDataBases:
         BaseSizeList = []
         BaseCreateBy = []
         BaseList = []
-        for root,path,files in os.walk('../../Data/'):
+        for root,path,files in os.walk('./Data/'):
             for i in path:
-                BaseModifyTime.append(ctime(os.stat(f'../../Data/{i}').st_ctime))
-                BaseSizeList.append(os.stat(f'../../Data/{i}').st_size)
-                BaseCreateBy.append(pwd.getpwuid(os.stat(f'../../Data/{i}').st_uid).pw_name)
+                BaseModifyTime.append(ctime(os.stat(f'./Data/{i}').st_ctime))
+                BaseSizeList.append(os.stat(f'./Data/{i}').st_size)
+                BaseCreateBy.append(pwd.getpwuid(os.stat(f'./Data/{i}').st_uid).pw_name)
                 BaseList.append(i)
         InfoTable.add_column('DataBaseName',BaseList)
         InfoTable.add_column('LastModified',BaseModifyTime)

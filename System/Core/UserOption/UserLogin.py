@@ -9,17 +9,17 @@ class UserLogin:
     def userCheck(self):
         ua_admin_list = []
         ua_normal_list = []
-        for root,path,files in os.walk("../../Users/Admin"):
+        for root,path,files in os.walk("./Users/Admin"):
             ua_admin_list = files
-        for root,path,file in os.walk("../../Users/Normal"):
+        for root,path,file in os.walk("./Users/Normal"):
             ua_normal_list = file
         if f"{self.gotUserName}.ua" in ua_admin_list:
-            with open(f"../../Users/Admin/{self.gotUserName}.ua","r") as json_certificator:
+            with open(f"./Users/Admin/{self.gotUserName}.ua","r") as json_certificator:
                 userInfo_ua = json_certificator.read().replace("'",'"')
             userInfo_Json = json.loads(userInfo_ua)
             return userInfo_Json
         elif f"{self.gotPassword}.ua" in ua_admin_list:
-            with open(f"../../Users/Normal/{self.gotUserName}.ua","r") as json_certificator:
+            with open(f"./Users/Normal/{self.gotUserName}.ua","r") as json_certificator:
                 userInfo_ua = json_certificator.read().replace("'",'"')
             userInfo_Json = json.loads(userInfo_ua)
             return userInfo_Json

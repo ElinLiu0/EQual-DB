@@ -5,6 +5,6 @@ class CreateDataBase:
         self.userAuthority = userAuthority
     def Make(self):
         if self.userAuthority == "Admin":
-            os.mkdir(f"../../Data/{self.BaseName}")
+            os.mkdir(f"./Data/{self.BaseName}")
         else:
             print("ERR:Detect you are not a Adminer.Please Contact you DataBase Adminer to create.\nCreate Option Denied!")   

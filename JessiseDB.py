@@ -1,21 +1,21 @@
 print("Initalizing Moudles ...")
 try:
-    from DatabaseOption.CreateDataBase import CreateDataBase
-    from DatabaseOption.CreateDataFrame import CreateDataFrame
-    from DatabaseOption.CurrentVersion import CurrentVersion
-    from DatabaseOption.DropDataBase import DropDataBase
-    from DatabaseOption.DropDataFrame import DropDataFrame
-    from DatabaseOption.ImportData import ImportData
-    from DatabaseOption.ShowDataBases import ShowDataBases
-    from DatabaseOption.ShowDataFrame import ShowDataFrames
-    from UserOption.UserAssign import UserRegister
-    from DatabaseOption.DiskUsage import ShowUsage
-    from DatabaseOption.DataFrameRecover import DataFrameRecover
-    from DatabaseOption.UseDataBase import UseDataBase
-    from DatabaseOption.ShowSelect import ShowSelect
-    from Test.Speedtest import SpeedTest
+    from System.Core.DatabaseOption.CreateDataBase import CreateDataBase
+    from System.Core.DatabaseOption.CreateDataFrame import CreateDataFrame
+    from System.Core.DatabaseOption.CurrentVersion import CurrentVersion
+    from System.Core.DatabaseOption.DropDataBase import DropDataBase
+    from System.Core.DatabaseOption.DropDataFrame import DropDataFrame
+    from System.Core.DatabaseOption.ImportData import ImportData
+    from System.Core.DatabaseOption.ShowDataBases import ShowDataBases
+    from System.Core.DatabaseOption.ShowDataFrame import ShowDataFrames
+    from System.Core.UserOption.UserAssign import UserRegister
+    from System.Core.DatabaseOption.DiskUsage import ShowUsage
+    from System.Core.DatabaseOption.DataFrameRecover import DataFrameRecover
+    from System.Core.DatabaseOption.UseDataBase import UseDataBase
+    from System.Core.DatabaseOption.ShowSelect import ShowSelect
+    from System.Core.Test.Speedtest import SpeedTest
     from getpass import getpass
-    from UserOption.UserLogin import UserLogin
+    from System.Core.UserOption.UserLogin import UserLogin
     import re
     import os
     import time

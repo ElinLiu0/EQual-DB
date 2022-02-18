@@ -16,7 +16,7 @@ class ShowSelect:
     def read_data(self):
         global df
         try:
-            with open(f"../../{self.targetBase}/{self.targetFrame}.df") as db_reader:
+            with open(f"./{self.targetBase}/{self.targetFrame}.df") as db_reader:
               data = [json.loads(pickle.load(db_reader))]  
             df = pd.DataFrame(data)
         except Exception as Error:
