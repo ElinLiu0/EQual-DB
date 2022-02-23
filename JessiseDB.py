@@ -16,6 +16,7 @@ try:
     from System.Core.Test.Speedtest import SpeedTest
     from getpass import getpass
     from System.Core.UserOption.UserLogin import UserLogin
+    from System.Core.DatabaseOption.SaveCache import SaveCache
     import re
     import os
     import time
@@ -32,7 +33,10 @@ def Shell():
     except Exception as Error:
         print(f"ERR : During use {userNameGot} to login,there was error occured below:\n{str(Error)}")
     if UserInfo != None:
+        global caching_database
         caching_database = None
+        global caching_dataframe
+        caching_dataframe = None
         while True:
             start_time = time.time()
             try:
@@ -181,19 +185,29 @@ def Shell():
                             # if mathmetic symbols in extract command areas
                             if i in math_symblos:
                                 # Then do mathShown() methods
-                                boot.mathShown()
+                                caching_dataframe = boot.mathShown()
                         # Do lambda checking
                         # This method allows user wrote a full lambda expression to use
                         # Just like the normal way you do on Pandas
                         # such as : SELECT df['tf'] = df['yn'].apply(lambda x:True if x == 'yes' else False) FROM {frame_name}
                         if "lambda" in extract:
-                            boot.lambdaShown()
+                            caching_dataframe = boot.lambdaShown()
+                        else:
+                            caching_dataframe = boot.shown()
                     except Exception as Error:
                         print(f"ERR : During doing selection on {usingFrame},there was an error caused by below : \n{str(Error)}")
                 elif recieve == "WHICH BASE":
                     # This command could tell the user that which database now caching in memory
                     # To activate the caching_database variable,need to use "USE DATABASE" func first
-                    print(f"Currently caching with database : {caching_database}")       
+                    print(f"Currently caching with database : {caching_database}")   
+                elif re.match("SAVE CACHE AS",recieve) != None:
+                    save_name = recieve[recieve.index('AS') + len('AS') : recieve.index('IN')].replace("")
+                    save_format =  recieve[recieve.index('IN') + len('IN') : ].replace(" ","")
+                    try:
+                        boot = SaveCache(data=caching_dataframe,name=save_name,format=save_format)
+                        boot.Save()
+                    except Exception as Error:
+                        print(f"ERR : During Handling Saving Cache Dataframe,there was an error occured below:\n{str(Error)}")
                 else:
                     print("ERR : Unsupported shell command input!Operation refused!")   
                 end_time = time.time()

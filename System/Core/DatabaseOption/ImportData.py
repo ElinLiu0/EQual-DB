@@ -15,18 +15,14 @@ class ImportData:
             if ".csv" in self.sourcePath:
                 df = pd.read_csv(self.sourcePath,encoding=self.encoder)
                 data = df.to_json(orient=True)
-                with open(f"./Data/{self.database}/{self.frameName}.df","wb") as db_writer:
-                    pickle.dump(data,db_writer)
-                db_writer.close()
+                df.to_pickle(f"./Data/{self.database}/{self.frameName}.df")
                 with open(f"./Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
                     pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
             if ".excel" in self.sourcePath:
                 df = pd.read_excel(self.sourcePath,enconding=self.encoder)
                 data = df.to_json(orient=True)
-                with open(f"./Data/{self.database}/{self.frameName}.df","wb") as db_writer:
-                    pickle.dump(data,db_writer)
-                db_writer.close()
+                df.to_pickle(f"./Data/{self.database}/{self.frameName}.df")
                 with open(f"./Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
                     pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
@@ -34,9 +30,7 @@ class ImportData:
                 df = pd.read_html(self.sourcePath)[0]
                 # dask_proc = pd.from_pandas(tem)
                 data = df.to_json(orient=True)
-                with open(f"./Data/{self.database}/{self.frameName}.df","wb") as db_writer:
-                    pickle.dump(data,db_writer)
-                db_writer.close()
+                df.to_pickle(f"./Data/{self.database}/{self.frameName}.df")
                 with open(f"./Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
                     pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
@@ -44,9 +38,7 @@ class ImportData:
                 df = pd.read_sql(self.sourcePath)
                 # dask_proc = pd.from_pandas(tem)
                 data = df.to_json(orient=True)
-                with open(f"./Data/{self.database}/{self.frameName}.df","wb") as db_writer:
-                    pickle.dump(data,db_writer)
-                db_writer.close()
+                df.to_pickle(f"./Data/{self.database}/{self.frameName}.df")
                 with open(f"./Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
                     pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()

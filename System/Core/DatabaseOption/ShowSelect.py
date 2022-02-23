@@ -16,9 +16,7 @@ class ShowSelect:
     def read_data(self):
         global df
         try:
-            with open(f"./{self.targetBase}/{self.targetFrame}.df") as db_reader:
-              data = [json.loads(pickle.load(db_reader))]  
-            df = pd.DataFrame(data)
+            df = pd.read_pickle(f"./{self.targetBase}/{self.targetFrame}.df")
         except Exception as Error:
             print(f"ERR : Not found dataframe {self.targetFrame} in caching base.Operation refused!")     
     def shown(self):
@@ -30,8 +28,10 @@ class ShowSelect:
                 print(f"WAR : Dataframe shape is over default limitation!Shown previous {self.Limitation} lines below.")
         elif type(self.colRange) == str and self.colRange != "*":
             shownFrame = tabulate(pd.DataFrame(df[self.colRange][0:self.Limitation]),headers=self.headers,tablefmt=self.tablefmt)
+            return pd.DataFrame(df[self.colRange][0:self.Limitation])
         elif type(self.colRange) == list:
             shownFrame = tabulate(pd.DataFrame(df.loc[:,self.colRange][0:self.Limitation]),headers=self.headers,tablefmt=self.tablefmt)
+            return df.loc[:,self.colRange][0:self.Limitation]
         print(shownFrame)
     def mathShown(self):
         math_symblos = ["*","^","-","+","/","%","//"]
@@ -40,6 +40,7 @@ class ShowSelect:
                 if i in math_symblos:
                     shownFrame = tabulate(pd.DataFrame(exec(self.colRange))[0:self.Limitation],headers=self.headers,tablefmt=self.tablefmt)
                     print(shownFrame)
+                    return pd.DataFrame(exec(self.colRange))[0:self.Limitation]
                 else:
                     pass
     def lambdaShown(self):
@@ -47,5 +48,6 @@ class ShowSelect:
             if "lambda" in self.colRange:
                 shownFrame = tabulate(pd.DataFrame(exec(self.colRange))[0:self.Limitation],headers=self.headers,tablefmt=self.tablefmt)
                 print(shownFrame)
+                return pd.DataFrame(exec(self.colRange))[0:self.Limitation]
             else:
                 pass
