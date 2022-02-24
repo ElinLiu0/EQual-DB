@@ -24,6 +24,7 @@ class ShowSelect:
             # use Pandas DataFrame Directly from Memory 
             if df.shape[0] <= self.Limitation:
                 shownFrame = tabulate(df,headers=self.headers,tablefmt=self.tablefmt)
+                return df
             else:
                 print(f"WAR : Dataframe shape is over default limitation!Shown previous {self.Limitation} lines below.")
         elif type(self.colRange) == str and self.colRange != "*":
