@@ -13,7 +13,7 @@ class SaveCache:
         elif self.format == "EXCEL" or self.format == "xls":
             self.data.to_excel(f"Export/{self.name}.xlsx")
         elif self.format == "HTML" or self.format == "html":
-            self.data.to_excel(f"Export/{self.name}.csv")
+            self.data.to_html(f"Export/{self.name}.csv")
         elif self.format == "JSON" or self.format == "json":
             self.data.to_json(f"Export/{self.name}.json")
         elif self.format == "PICKLE" or self.format == "pickle":
