@@ -1,5 +1,4 @@
 import os
-import dask.dataframe as dd
 import pandas as pd
 import pickle
 class DataFrameRecover:
@@ -13,8 +12,7 @@ class DataFrameRecover:
                 read_data = pickle.load(RecoverReader).split("\n","")
                 RecoverData = read_data[1]
             df = pd.DataFrame(RecoverData)
-            dask_processed = dd.from_pandas(df)
-            dask_processed.to_json(f"./Data/{self.targetDataBase}/{self.targetDataFrame}.df")
+            df.to_pickle(f"./Data/{self.targetDataBase}/{self.targetDataFrame}.df")
             rollBackData = read_data[0][read_data.index(":") : ].replace(" ","")
             print(f"{self.targetDataFrame} were fall back to the time version : {rollBackData}!Operation Process Done!")
         else:
