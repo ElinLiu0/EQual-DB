@@ -7,7 +7,11 @@ class DataFrameRecover:
         self.targetDataFrame = targetDataFrame
         self.authority = authority
     def Recovering(self):
-        if self.authority == "Admin" & os.popen("whoami").read().replace("\n","") == "root":
+        login_user_sys = os.popen("whoami").read().replace("\n", "")
+        login_user_sys_authority = (
+            os.popen(f"groups {login_user_sys}").read().replace(f"{login_user_sys} : ", "").split(" ")
+        )
+        if self.authority == "Admin" & "sudo" in login_user_sys_authority:
             with open(f"./Data/{self.targetDataBase}/{self.targetDataFrame}.rc","w") as RecoverReader:
                 read_data = pickle.load(RecoverReader).split("\n","")
                 RecoverData = read_data[1]
