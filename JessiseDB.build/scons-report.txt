@@ -1,6 +1,6 @@
 CC=gcc
 CCACHE_DIR=/home/elin/.cache/Nuitka/ccache
-CCACHE_LOGFILE=/home/elin/Jessise-DB/JessiseDB.build/ccache-20163.txt
+CCACHE_LOGFILE=/home/elin/Jessise-DB/JessiseDB.build/ccache-859.txt
 CCCOM=$CC -o $TARGET -c $CFLAGS $CCFLAGS $_CCCOMCOM $SOURCES
 CFILESUFFIX=.c
 CPPDEFINES=['__NUITKA_NO_ASSERT__', '_NUITKA_CONSTANTS_FROM_INCBIN', '_NUITKA_FROZEN=0', '_NUITKA_EXE']
