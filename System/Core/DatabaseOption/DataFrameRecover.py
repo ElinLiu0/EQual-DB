@@ -7,7 +7,7 @@ class DataFrameRecover:
         self.targetDataFrame = targetDataFrame
         self.authority = authority
     def Recovering(self):
-        if self.authority == "Admin":
+        if self.authority == "Admin" & os.popen("whoami").read().replace("\n","") == "root":
             with open(f"./Data/{self.targetDataBase}/{self.targetDataFrame}.rc","w") as RecoverReader:
                 read_data = pickle.load(RecoverReader).split("\n","")
                 RecoverData = read_data[1]

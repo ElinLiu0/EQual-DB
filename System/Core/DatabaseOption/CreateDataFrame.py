@@ -17,3 +17,5 @@ class CreateDataFrame:
         with open(f"./Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
             pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}",recover_writter)
         recover_writter.close()
+        if os.path.exists(f"./Data/{self.database}/{self.frameName}.rc"):
+            os.chmod(f"./Data/{self.database}/{self.frameName}.rc",S_IREAD)

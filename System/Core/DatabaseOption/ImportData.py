@@ -3,6 +3,8 @@ import imp
 import pickle
 import pandas as pd
 from datetime import datetime
+import os
+from stat import *
 class ImportData:
     def __init__(self,sourcePath,targetDataBase,frameName,encoder,userAuthority) -> None:
         self.sourcePath = sourcePath
@@ -42,6 +44,8 @@ class ImportData:
                 with open(f"./Data/{self.database}/{self.frameName}.rc","wb") as recover_writter:
                     pickle.dump(f"Recover Chekup create at : {datetime.now()}\n{data}")
                 recover_writter.close()
+            if os.path.exists(f"./Data/{self.database}/{self.frameName}.rc"):
+                os.chmod(f"./Data/{self.database}/{self.frameName}.rc",S_IREAD)
             else:
                 print("Unsupported source datatype,refused!")
         else:
