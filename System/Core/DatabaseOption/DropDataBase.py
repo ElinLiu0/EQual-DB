@@ -15,4 +15,4 @@ class DropDataBase:
                 print(f"Database {self.targetBase} has been successfully delete!Operation Done at {datetime.now()}")
                 shutil.rmtree(f'./Data/{self.targetBase}')
             else:
-                print("Invalid Exists Database name,Drop Failed!")
+                raise FileNotFoundError("Invalid Exists Database name,Drop Failed!")

@@ -12,6 +12,6 @@ class DropDataFrame:
             os.remove(f"./Data/{self.targetBase}/{self.targetFrame}.df")
             print(f"Successfully remove dataframe {self.targetFrame}")
         else:
-            print(f"Invalid dataFrame specified!Drop operation refuesed!")
+            raise FileNotFoundError(f"Invalid dataFrame specified!Drop operation refuesed!")
 
         

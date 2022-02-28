@@ -30,4 +30,4 @@ class ShowDataFrames:
             InfoTable.add_column("Encoding",FrameEncoding)
             print(InfoTable)
         except Exception:
-            print("No dataframe exists!")
+            raise FileNotFoundError("No dataframe exists!")

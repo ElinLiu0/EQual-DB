@@ -1,6 +1,7 @@
 # Update : For the usbility the compatbility to give up using dask API
 import imp
 import pickle
+from shutil import ExecError
 import pandas as pd
 from datetime import datetime
 import os
@@ -47,6 +48,6 @@ class ImportData:
             if os.path.exists(f"./Data/{self.database}/{self.frameName}.rc"):
                 os.chmod(f"./Data/{self.database}/{self.frameName}.rc",S_IREAD)
             else:
-                print("Unsupported source datatype,refused!")
+                raise TypeError("Unsupported source datatype,refused!")
         else:
-            print("ERR : Not as a Adminer to do operation,refused!")
+            raise ExecError("ERR : Not as a Adminer to do operation,refused!")

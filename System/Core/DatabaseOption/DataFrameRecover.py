@@ -1,4 +1,5 @@
 import os
+from shutil import ExecError
 import pandas as pd
 import pickle
 class DataFrameRecover:
@@ -20,4 +21,4 @@ class DataFrameRecover:
             rollBackData = read_data[0][read_data.index(":") : ].replace(" ","")
             print(f"{self.targetDataFrame} were fall back to the time version : {rollBackData}!Operation Process Done!")
         else:
-            print(f"ERR : Not Admin,Operation Refused!")
+            raise ExecError(f"ERR : Not Admin,Operation Refused!")

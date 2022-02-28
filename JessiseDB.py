@@ -14,9 +14,12 @@ try:
     from System.Core.DatabaseOption.UseDataBase import UseDataBase
     from System.Core.DatabaseOption.ShowSelect import ShowSelect
     from System.Core.Test.Speedtest import SpeedTest
-    from getpass import getpass
     from System.Core.UserOption.UserLogin import UserLogin
-    from System.Core.DatabaseOption.SaveCache import SaveCache
+    from System.Core.DatabaseOption.ExportCache import ExportCache
+    from System.Core.DatabaseOption.AppendData import AppendData
+    from System.Core.DatabaseOption.DropCol import DropColumns
+    from System.Core.DatabaseOption.DropRow import DropRow
+    from System.Core.DatabaseOption.InsertCols import InsertColumns
     import re
     import os
     import time
@@ -35,8 +38,10 @@ def Shell():
     if UserInfo != None:
         global caching_database
         caching_database = None
-        global caching_dataframe
-        caching_dataframe = None
+        global caching_datastream
+        caching_datastream = None
+        global caching_frame_name
+        caching_frame_name = None
         while True:
             start_time = time.time()
             try:
@@ -161,6 +166,7 @@ def Shell():
                     fromIndex = recieve.index('FROM')
                     extract =  recieve[recieve.index('SELECT') + len('SELECT') : fromIndex] 
                     usingFrame = recieve[fromIndex + 4:]
+                    caching_frame_name = usingFrame
                     # With limitation example should like 
                     # Example : SELECT * FROM {frame_name} LIMIT {an integer limitation,
                     # default 5000,can over it if need!}
@@ -186,28 +192,67 @@ def Shell():
                             if i in math_symblos:
                                 # Then do mathShown() methods
                                 caching_dataframe = boot.mathShown()
+                                print(f"INFO : Switching frame {usingFrame}")
                         # Do lambda checking
                         # This method allows user wrote a full lambda expression to use
                         # Just like the normal way you do on Pandas
                         # such as : SELECT df['tf'] = df['yn'].apply(lambda x:True if x == 'yes' else False) FROM {frame_name}
                         if "lambda" in extract:
                             caching_dataframe = boot.lambdaShown()
+                            print(f"INFO : Switching frame {usingFrame}")
                         else:
                             caching_dataframe = boot.shown()
+                            print(f"INFO : Switching frame {usingFrame}")
                     except Exception as Error:
                         print(f"ERR : During doing selection on {usingFrame},there was an error caused by below : \n{str(Error)}")
                 elif recieve == "WHICH BASE":
                     # This command could tell the user that which database now caching in memory
                     # To activate the caching_database variable,need to use "USE DATABASE" func first
                     print(f"Currently caching with database : {caching_database}")   
-                elif re.match("SAVE CACHE AS",recieve) != None:
+                # Example : EXPORT CACHE AS (export_file_name) IN (export_file_format)
+                elif re.match("EXPORT CACHE AS",recieve) != None:
                     save_name = recieve[recieve.index('AS') + len('AS') : recieve.index('IN')].replace("")
                     save_format =  recieve[recieve.index('IN') + len('IN') : ].replace(" ","")
                     try:
-                        boot = SaveCache(data=caching_dataframe,name=save_name,format=save_format)
-                        boot.Save()
+                        boot = ExportCache(data=caching_dataframe,name=save_name,format=save_format)
+                        boot.Export()
                     except Exception as Error:
                         print(f"ERR : During Handling Saving Cache Dataframe,there was an error occured below:\n{str(Error)}")
+                elif re.match("APPEND DATA TO",recieve) != None:
+                    # By Default,this method will only can be used when select a frame from database
+                    # It not only can be insert a row datastream,you can even use this method to 
+                    # merging two same cols dataframe
+                    try:
+                        boot = AppendData(Base=caching_database,Frame=caching_dataframe,Data=data)
+                        caching_dataframe = boot.Append()
+                    except Exception as Error:
+                        print(f"ERR : During handle appeding to cache,there was error occured below:\n{str(Error)}")
+                elif re.match("DROP COLS",recieve) != None:
+                    # This method allows user to given a paramiter as list type to drop multiple cols
+                    colName = recieve[recieve.index("COLS")]
+                    try:
+                        boot = DropColumns(Base=caching_database,Frame=caching_dataframe,colName=colName)
+                        caching_dataframe = boot.Drop()
+                    except Exception as Error:
+                        print(f"ERR : During Droping columns : {colName},there was an error occured below:\n{str(Error)}")
+                elif re.match("DROP ROWS",recieve) != None:
+                    # This method allows user to given a paramiter as list type to drop multiple cols
+                    RowIndex = recieve[recieve.index("ROWS")]
+                    try:
+                        boot = DropRow(Base=caching_database,Frame=caching_dataframe,RowIndex=RowIndex)
+                        caching_dataframe = boot.Drop()
+                    except Exception as Error:
+                        print(f"ERR : During Droping Rows index like : {RowIndex},there was an error occured below:\n{str(Error)}")
+                elif re.match("INSERT COLS",recieve) != None:
+                    withIndex = recieve[recieve.index("WITH")]
+                    colIndex = recieve[recieve.index("COLS")]
+                    colName = recieve[colIndex + len("COLS") : withIndex].replace(" ","")
+                    data = recieve[withIndex :].replace(" ","")
+                    try:
+                        boot = InsertColumns(Base=caching_database,Frame=caching_frame_name,colName=colName,colData=data)
+                        boot.Insert()
+                    except Exception as Error:
+                        print(f"ERR : During inserting col {colName},there was an error occured below:\n{str(Error)}")
                 else:
                     print("ERR : Unsupported shell command input!Operation refused!")   
                 end_time = time.time()
