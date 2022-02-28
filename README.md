@@ -21,3 +21,7 @@ Also you can join my porject to help me improve JessiseDB Better.
     - Redefining the DataRecover Function Authority Limit,both the user got Admin and sudo can do Recover Operation,yet can not.
     - Remakig Bin File
     - Fixing the SaveCache function -> ouput to xls format error,replace as .xlsx
+  - 2022/2/28:
+    - Add I/O function : Insert,Append,Drop(Cols/Rows)
+    - Split two function : Export/Save Cache,to allow user do more option on caching datastream
+    - Remaking bin file
