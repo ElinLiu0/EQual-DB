@@ -4,7 +4,7 @@ from tabulate import tabulate
 import pandas as pd
 import json
 class ShowSelect:
-    def __init__(self,targetBase,targetFrame,colRange,limation=5000) -> None:
+    def __init__(self,targetBase,targetFrame,colRange,limation) -> None:
         # in default,this varaiable would be loading the caching database from shell.py
         self.targetBase = targetBase
         self.targetFrame = targetFrame

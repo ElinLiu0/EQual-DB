@@ -24,6 +24,7 @@ try:
     import os
     import time
     from getpass import getpass
+    import numpy as np
 except Exception as Error:
     print(f"During Initalizing moudles,there was an error occured by : {str(Error)}")
 def Shell():
@@ -170,6 +171,8 @@ def Shell():
                     # With limitation example should like 
                     # Example : SELECT * FROM {frame_name} LIMIT {an integer limitation,
                     # default 5000,can over it if need!}
+                    global limitation
+                    limitation = None
                     if "LIMIT" in recieve:
                         limitIndex = recieve.index("LIMIT")
                         limitation = int(recieve[limitIndex + len('LIMIT') :])
@@ -181,7 +184,7 @@ def Shell():
                                 boot = ShowSelect(targetBase=caching_database,targetFrame=usingFrame,colRange=extract,limation=limitation)
                         else:
                             if caching_database != None:
-                                boot = ShowSelect(targetBase=caching_database,targetFrame=usingFrame,colRange=extract)
+                                boot = ShowSelect(targetBase=caching_database,targetFrame=usingFrame,colRange=extract,limation=np.inf)
                         # Do mathmetic checking
                         # This method allows user do multiple complex mathmetic functions
                         # But the coloumns should default with 'df' on it or API wouldnt do the process
