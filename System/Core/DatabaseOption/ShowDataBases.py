@@ -1,3 +1,4 @@
+from email import message
 import os
 from prettytable import PrettyTable
 from time import ctime
@@ -5,7 +6,7 @@ import pwd
 class ShowDataBases:
     def __init__(self) -> None:
         pass
-    def showInfo(self):
+    def showInfo(self,user):
         InfoTable = PrettyTable()
         BaseList = None
         BaseModifyTime = []
@@ -23,3 +24,5 @@ class ShowDataBases:
         InfoTable.add_column('Size',BaseSizeList)
         InfoTable.add_column('Creator',BaseCreateBy)
         print(InfoTable)
+        message = f"User {user} is checking up database info."
+        return message

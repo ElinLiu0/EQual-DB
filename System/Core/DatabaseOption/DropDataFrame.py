@@ -1,3 +1,4 @@
+from email import message
 import os
 from datetime import datetime
 class DropDataFrame:   
@@ -11,6 +12,8 @@ class DropDataFrame:
         if os.path.exists(f"./Data/{self.targetBase}/{self.targetFrame}.df"):
             os.remove(f"./Data/{self.targetBase}/{self.targetFrame}.df")
             print(f"Successfully remove dataframe {self.targetFrame}")
+            message = f"Successfully remove dataframe {self.targetFrame}"
+            return message
         else:
             raise FileNotFoundError(f"Invalid dataFrame specified!Drop operation refuesed!")
 

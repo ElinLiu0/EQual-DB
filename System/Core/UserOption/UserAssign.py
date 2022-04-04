@@ -1,4 +1,5 @@
 from ast import Pass
+from email import message
 from hashlib import sha256
 from stat import S_IREAD
 from getpass import getpass
@@ -20,7 +21,9 @@ class UserRegister:
             UAWritter.close()
             if os.path.exists(f"./Users/Admin/{user}.ua"):
                 os.chmod(f"./Users/Admin/{user}.ua",S_IREAD)  
-                print(f"User {self.UserName} has successfully created in {authority} group!Operation Done at : {datetime.now()}")         
+                print(f"User {self.UserName} has successfully created in {authority} group!Operation Done at : {datetime.now()}")
+                message = f"User {self.UserName} has successfully created in {authority} group!Operation Done at : {datetime.now()}"
+                return message         
         else:
             with open(f"./Users/Normal/{user}.ua","w") as UAWritter:
                 json_build = {"name":self.UserName,"authority":"user","password":sha256(password.encode('utf-8')).hexdigest()}
@@ -29,3 +32,5 @@ class UserRegister:
             if os.path.exists(f"./Users/Normal/{user}.ua"):
                 os.chmod(f"./Users/Normal/{user}.ua",S_IREAD)
                 print(f"User {self.UserName} has successfully created in {authority} group!Operation Done at : {datetime.now()}")
+                message = f"User {self.UserName} has successfully created in {authority} group!Operation Done at : {datetime.now()}"
+                return message

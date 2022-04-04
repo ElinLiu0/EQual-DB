@@ -1,3 +1,4 @@
+from email import message
 import os
 class UseDataBase:
     def __init__(self,targetBase) -> None:
@@ -8,6 +9,7 @@ class UseDataBase:
             for i in path:
                 DataBaseList.append(i)
         if self.targetBase in DataBaseList:
-            return True
+            message = f"database {self.targetBase} has been used!"
+            return True,message
         else:
             return False

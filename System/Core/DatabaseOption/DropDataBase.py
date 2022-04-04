@@ -1,3 +1,4 @@
+from email import message
 import os
 from datetime import datetime
 import shutil
@@ -14,5 +15,7 @@ class DropDataBase:
             if self.targetBase in database_list:
                 print(f"Database {self.targetBase} has been successfully delete!Operation Done at {datetime.now()}")
                 shutil.rmtree(f'./Data/{self.targetBase}')
+                message = f"Successfully removed databae {self.targetBase}"
+                return message
             else:
                 raise FileNotFoundError("Invalid Exists Database name,Drop Failed!")

@@ -28,7 +28,7 @@ class UserLogin:
     def login(self):
         userInfo_Json = self.userCheck()
         if sha256(self.gotPassword.encode('utf-8')).hexdigest() == userInfo_Json['password']:
-            print(f"As user {self.gotUserName} login sucess!Last login at {datetime.now()}")
+            print(f"As user {self.gotUserName} login sucess,Welcome!")
             return userInfo_Json
         elif self.gotPassword == None:
             print("Invalid password input,Login Denied!")

@@ -6,7 +6,7 @@ from time import ctime
 class ShowDataFrames:
     def __init__(self,targetBase) -> None:
         self.targetBase = targetBase
-    def showInfo(self):
+    def showInfo(self,user):
         try:
             InfoTable = PrettyTable()
             FrameList = None
@@ -29,5 +29,7 @@ class ShowDataFrames:
             InfoTable.add_column('Creator',FrameCreateBy)
             InfoTable.add_column("Encoding",FrameEncoding)
             print(InfoTable)
+            message = f"user {user} is checking up dataframe info of database {self.targetBase}"
+            return message
         except Exception:
             raise FileNotFoundError("No dataframe exists!")

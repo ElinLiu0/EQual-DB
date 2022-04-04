@@ -1,3 +1,4 @@
+from email import message
 import pandas as pd
 import pickle
 from datetime import datetime
@@ -18,4 +19,5 @@ class DropRow:
         RecoverWritter.close()
         if os.path.exists(f"Data/{self.Base}/{self.Frame}.rc"):
             os.chmod(f"Data/{self.Base}/{self.Frame}.rc",S_IREAD)
-        return df
+        message = f"row {self.RowIndex} has been droped from {self.Base}.{self.Frame}"
+        return df,message

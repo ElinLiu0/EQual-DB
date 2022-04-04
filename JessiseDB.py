@@ -1,41 +1,45 @@
 print("Initalizing Moudles ...")
-try:
-    from System.Core.DatabaseOption.CreateDataBase import CreateDataBase
-    from System.Core.DatabaseOption.CreateDataFrame import CreateDataFrame
-    from System.Core.DatabaseOption.CurrentVersion import CurrentVersion
-    from System.Core.DatabaseOption.DropDataBase import DropDataBase
-    from System.Core.DatabaseOption.DropDataFrame import DropDataFrame
-    from System.Core.DatabaseOption.ImportData import ImportData
-    from System.Core.DatabaseOption.ShowDataBases import ShowDataBases
-    from System.Core.DatabaseOption.ShowDataFrame import ShowDataFrames
-    from System.Core.UserOption.UserAssign import UserRegister
-    from System.Core.DatabaseOption.DiskUsage import ShowUsage
-    from System.Core.DatabaseOption.DataFrameRecover import DataFrameRecover
-    from System.Core.DatabaseOption.UseDataBase import UseDataBase
-    from System.Core.DatabaseOption.ShowSelect import ShowSelect
-    from System.Core.Test.Speedtest import SpeedTest
-    from System.Core.UserOption.UserLogin import UserLogin
-    from System.Core.DatabaseOption.ExportCache import ExportCache
-    from System.Core.DatabaseOption.AppendData import AppendData
-    from System.Core.DatabaseOption.DropCol import DropColumns
-    from System.Core.DatabaseOption.DropRow import DropRow
-    from System.Core.DatabaseOption.InsertCols import InsertColumns
-    import re
-    import os
-    import time
-    from getpass import getpass
-    import numpy as np
-except Exception as Error:
-    print(f"During Initalizing moudles,there was an error occured by : {str(Error)}")
+from System.Core.DatabaseOption.CreateDataBase import CreateDataBase
+from System.Core.DatabaseOption.CreateDataFrame import CreateDataFrame
+from System.Core.DatabaseOption.CurrentVersion import CurrentVersion
+from System.Core.DatabaseOption.DropDataBase import DropDataBase
+from System.Core.DatabaseOption.DropDataFrame import DropDataFrame
+from System.Core.DatabaseOption.ImportData import ImportData
+from System.Core.DatabaseOption.ShowDataBases import ShowDataBases
+from System.Core.DatabaseOption.ShowDataFrame import ShowDataFrames
+from System.Core.UserOption.UserAssign import UserRegister
+from System.Core.DatabaseOption.DiskUsage import ShowUsage
+from System.Core.DatabaseOption.DataFrameRecover import DataFrameRecover
+from System.Core.DatabaseOption.UseDataBase import UseDataBase
+from System.Core.DatabaseOption.ShowSelect import ShowSelect
+from System.Core.UserOption.UserLogin import UserLogin
+from System.Core.DatabaseOption.ExportCache import ExportCache
+from System.Core.DatabaseOption.AppendData import AppendData
+from System.Core.DatabaseOption.DropCol import DropColumns
+from System.Core.DatabaseOption.DropRow import DropRow
+from System.Core.DatabaseOption.InsertCols import InsertColumns
+from utils.logs.logs import LogsInit
+from utils.Test.Speedtest import SpeedTest
+import re
+import os
+import time
+from getpass import getpass
 def Shell():
+    logdir = "logs"
+    LogInit = LogsInit(logdir=logdir)
+    logName = LogInit.InitLog()
     # This Variable were prepared for use function and select function yet
     userNameGot = input("Enter the login username : ")
     userPasswordGot = getpass("Enter the password : ")
     try:
         boot = UserLogin(userNameGot,userPasswordGot)
         UserInfo= boot.login()
-    except Exception as Error:
-        print(f"ERR : During use {userNameGot} to login,there was error occured below:\n{str(Error)}")
+        message = LogInit.LoginSuccess(user=UserInfo['name']) 
+    except Exception as e:
+        message = LogInit.LoginFailed()
+        print(message)
+        logName = LogInit.InitLog()
+        LogInit.writeLog(logName,message=message)
     if UserInfo != None:
         global caching_database
         caching_database = None
@@ -43,6 +47,7 @@ def Shell():
         caching_datastream = None
         global caching_frame_name
         caching_frame_name = None
+        LogInit.writeLog(logName,message=message)
         while True:
             start_time = time.time()
             try:
@@ -55,9 +60,14 @@ def Shell():
                 elif re.match("CREATE DATABASE",recieve) != None:
                     try:
                         boot = CreateDataBase(BaseName=recieve[16:],userAuthority=UserInfo['authority'])
-                        boot.Make()                
-                    except Exception as Error:
-                        print(f"ERR : Couldnt build a database,cause by error below : \n{str(Error)}")
+                        message = LogInit.Sucess(boot.Make())
+                        LogInit.writeLog(logName,message=message)                
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 # This method is should Create a blank dataframe for the database which specified as keyword
                 elif re.match("CREATE DATAFRAME",recieve) != None:
                     startIndex = recieve.index("DATAFRAME")+len("DATAFRAME")
@@ -66,11 +76,19 @@ def Shell():
                     IndexWithStart = recieve.index("WITH")+len("WITH")
                     # so the full CLI command should be : CREATE DATAFRAME 'dataframe_name' FOR 'database_name' \
                     # with [{data(should wrote the data like JSON froamt)}]
-                    dataFrame = recieve[startIndex : IndexFor-3].replace(" ","")
-                    dataBase = recieve[IndexFor : IndexWith].replace(" ","")
-                    data = recieve[IndexWithStart : ]
-                    boot = CreateDataFrame(database=dataBase,frameName=dataFrame,data=data)
-                    boot.Create()            
+                    try:
+                        dataFrame = recieve[startIndex : IndexFor-3].replace(" ","")
+                        dataBase = recieve[IndexFor : IndexWith].replace(" ","")
+                        data = recieve[IndexWithStart : ]
+                        boot = CreateDataFrame(database=dataBase,frameName=dataFrame,data=data)
+                        message = LogInit.Sucess(boot.Create())
+                        LogInit.writeLog(logName,message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)        
                 elif recieve == "TEMP VERSION":
                     CurrentVersion()               
                 # The Full CLI Command Should Like : IMPORT DATA FROM 'sourcePath' TO 'database'.'dataframe WITH 'encoder'
@@ -87,22 +105,38 @@ def Shell():
                         # This usallly need to a database create before
                         # for example : IMPORT DATA FROM {url_path} TO test.test WITH UTF-8
                         # thats need you exist database test before importing data.
-                        boot = ImportData(sourcePath=sourcePath,targetDataBase=targetBase,frameName=targetFrame,encoder=encoder,userAuthority=UserInfo['authority'])
-                        boot.Processing()
-                    except Exception as Error:
-                        print(f"ERR : During importing data from sourcepath : {sourcePath},there was error occured cause by below:\n{str(Error)}")
+                        boot = ImportData(sourcePath=sourcePath,targetDataBase=targetBase,frameName=targetFrame,
+                            encoder=encoder,userAuthority=UserInfo['authority'],user=UserInfo['name'])
+                        message = LogInit.Sucess(boot.Processing())
+                        LogInit.writeLog(logName,message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif recieve == "SHOW DATABASES":
                     try:
                         boot = ShowDataBases()
-                        boot.showInfo()                 
-                    except Exception as Error:
-                        print(f"ERR : Could not load the databases folder because : {str(Error)}")
+                        message = LogInit.Sucess(boot.showInfo(user=UserInfo['name']))
+                        LogInit.writeLog(message=message)              
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif recieve == "SHOW DATAFRAMES":
                     try:
                         boot = ShowDataFrames(targetBase=caching_database)
-                        boot.showInfo()    
-                    except Exception as Error:
-                        print(F"ERR : Colud not show dataframe trees because :\n{str(Error)}")
+                        message = LogInit.Sucess(boot.showInfo())
+                        LogInit.writeLog(message=message) 
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 # The CLI Command Line Should be like : ADD USER 'user_name' TO 'user_group(admin or nonadmin)'
                 elif re.match("ADD USER",recieve) != None:
                     if os.popen("whoami").read().replace("\n","") == "root":
@@ -113,33 +147,53 @@ def Shell():
                         addUserPasswd = getpass(f"Specify the password of {addUserName} to continue : ")
                         try:
                             boot = UserRegister(UserName=addUserName,Password=addUserPasswd,Authority=addUserAuthority)
-                            boot.DoRegiest()                       
-                        except Exception as Error:
-                            print(f"ERR : During creating user {addUserName},there was an error caused by : {Error}")                       
+                            message = LogInit.Sucess(boot.DoRegiest())
+                            LogInit.writeLog(message=message)                       
+                        except Exception as e:
+                            file = e.__traceback__.tb_frame.f_globals["__file__"]
+                            line = e.__traceback__.tb_lineno
+                            message = LogInit.Error(file,line)
+                            print(message)
+                            LogInit.writeLog(logName,message=message)                
                     else:
                         print("ERR : Can not make resgisteration of user under none root login!")            
                 elif recieve == "SHOW DISK USAGE":
                     try:
                         boot = ShowUsage()
                         boot.showUsage()                 
-                    except Exception as Error:
-                        print(f"ERR : During checkout the disk partition usage,there was error caused by :\n{str(Error)}")                 
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)             
                 # The CLI Command Line should like : RECOVER 'targetDataBase.targetDataFrame'
                 elif re.match("RECOVER",recieve) != None:
                     dotIndex = recieve.index(".")
                     targetBase = recieve[:dotIndex].replace("RECOVER ","")
                     targetFrame = recieve[dotIndex + 1 : ]
                     try:
-                        DataFrameRecover(targetDataBase=targetBase,targetDataFrame=targetFrame)                   
-                    except Exception as Error:
-                        print(f"ERR : Cant roll back the dataframe to before vesion caused by : {str(Error)}")
+                        boot = DataFrameRecover(targetDataBase=targetBase,targetDataFrame=targetFrame)
+                        message = LogInit.Sucess(boot.Recovering())
+                        LogInit.writeLog(logName,message=message)                   
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                         
                 elif re.match("DROP DATABASE",recieve) != None:
                     try:
                         boot = DropDataBase(targetBase=caching_database,userAuthority=UserInfo['authority'])    
-                        boot.Drop()                
-                    except Exception as Error:
-                        print(f"ERR : During Dropping database : {caching_database},there was error occured by : {str(Error)}")    
+                        message = LogInit.Sucess(boot.Drop())
+                        LogInit.writeLog(message=message)              
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 # The Drop DataFrame CLI Should Like : DROP DATAFRAME 'database'.'dataframe'
                 elif re.match("DROP DATAFRAME",recieve) != None:
                     dotIndex = recieve.index(".")
@@ -147,20 +201,42 @@ def Shell():
                     targetBase = recieve[:dotIndex].replace("DROP DATAFRAME ","")
                     try:
                         boot = DropDataFrame(targetBase=targetBase,targetFrame=targetFrame)
-                        boot.Drop()
-                    except Exception as Error:
-                        print(f"ERR : During Drooping dataframe {targetBase}.{targetFrame},there was an error caused by : {str(Error)}")
+                        message = LogInit.Sucess(boot.Drop())
+                        LogInit.writeLog(message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif re.match("USE DATABASE",recieve) != None:
                     dataBaseUsed = recieve[recieve.index('DATABASE') + len('DATABASE'):].replace(" ","")
-                    boot = UseDataBase(targetBase=dataBaseUsed)
-                    if boot.useBase() == True:
-                        caching_database = dataBaseUsed
-                        print(f"Database {dataBaseUsed} is now caching.")
-                    elif boot.useBase() == False:
-                        print(f"Invalid Specified Database name :{dataBaseUsed},please check that is really exist?")
+                    try:
+                        boot = UseDataBase(targetBase=dataBaseUsed)
+                        status,message = boot.useBase()
+                        if status == True:
+                            caching_database = dataBaseUsed
+                            print(f"Database {dataBaseUsed} is now caching.")
+                            message = LogInit.Sucess(message=message)
+                            LogInit.writeLog(message=message)
+                        elif status == False:
+                            print(f"Invalid Specified Database name :{dataBaseUsed},please check that is really exist?")
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif recieve == "SPEEDTEST":
-                    boot = SpeedTest()
-                    boot.test()   
+                    try:
+                        boot = SpeedTest()
+                        boot.test()
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)   
                 elif re.match("SELECT",recieve) != None:
                     # Defaultly CLI command should like a normal sql like command 
                     # Example : SELECT * FROM {frame_name}
@@ -206,8 +282,12 @@ def Shell():
                         else:
                             caching_dataframe = boot.shown()
                             print(f"INFO : Switching frame {usingFrame}")
-                    except Exception as Error:
-                        print(f"ERR : During doing selection on {usingFrame},there was an error caused by below : \n{str(Error)}")
+                    except Exception as e:
+                            file = e.__traceback__.tb_frame.f_globals["__file__"]
+                            line = e.__traceback__.tb_lineno
+                            message = LogInit.Error(file,line)
+                            print(message)
+                            LogInit.writeLog(logName,message=message)
                 elif recieve == "WHICH BASE":
                     # This command could tell the user that which database now caching in memory
                     # To activate the caching_database variable,need to use "USE DATABASE" func first
@@ -219,33 +299,55 @@ def Shell():
                     try:
                         boot = ExportCache(data=caching_dataframe,name=save_name,format=save_format)
                         boot.Export()
-                    except Exception as Error:
-                        print(f"ERR : During Handling Saving Cache Dataframe,there was an error occured below:\n{str(Error)}")
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif re.match("APPEND DATA TO",recieve) != None:
                     # By Default,this method will only can be used when select a frame from database
                     # It not only can be insert a row datastream,you can even use this method to 
                     # merging two same cols dataframe
                     try:
                         boot = AppendData(Base=caching_database,Frame=caching_dataframe,Data=data)
-                        caching_dataframe = boot.Append()
-                    except Exception as Error:
-                        print(f"ERR : During handle appeding to cache,there was error occured below:\n{str(Error)}")
+                        caching_dataframe,message = boot.Append()
+                        message = LogInit.Sucess(message=message)
+                        LogInit.writeLog(message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif re.match("DROP COLS",recieve) != None:
                     # This method allows user to given a paramiter as list type to drop multiple cols
                     colName = recieve[recieve.index("COLS")]
                     try:
                         boot = DropColumns(Base=caching_database,Frame=caching_dataframe,colName=colName)
-                        caching_dataframe = boot.Drop()
-                    except Exception as Error:
-                        print(f"ERR : During Droping columns : {colName},there was an error occured below:\n{str(Error)}")
+                        caching_dataframe,message = boot.Drop()
+                        message = LogInit.Sucess(message=message)
+                        LogInit.writeLog(message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif re.match("DROP ROWS",recieve) != None:
                     # This method allows user to given a paramiter as list type to drop multiple cols
                     RowIndex = recieve[recieve.index("ROWS")]
                     try:
                         boot = DropRow(Base=caching_database,Frame=caching_dataframe,RowIndex=RowIndex)
-                        caching_dataframe = boot.Drop()
-                    except Exception as Error:
-                        print(f"ERR : During Droping Rows index like : {RowIndex},there was an error occured below:\n{str(Error)}")
+                        caching_dataframe,message = boot.Drop()
+                        message = LogInit.Sucess(message=message)
+                        LogInit.Sucess(message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 elif re.match("INSERT COLS",recieve) != None:
                     withIndex = recieve[recieve.index("WITH")]
                     colIndex = recieve[recieve.index("COLS")]
@@ -253,14 +355,24 @@ def Shell():
                     data = recieve[withIndex :].replace(" ","")
                     try:
                         boot = InsertColumns(Base=caching_database,Frame=caching_frame_name,colName=colName,colData=data)
-                        boot.Insert()
-                    except Exception as Error:
-                        print(f"ERR : During inserting col {colName},there was an error occured below:\n{str(Error)}")
+                        caching_dataframe,message = boot.Insert()
+                        message = LogInit.Sucess(message=message)
+                        LogInit.writeLog(logName,message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
                 else:
                     print("ERR : Unsupported shell command input!Operation refused!")   
                 end_time = time.time()
                 print(f"Query Done!Processing with {round(end_time - start_time,2)} ms")           
-            except Exception as Error:
-                print(f"ERR : Shell prompt has occured error : {str(Error)}")
+            except Exception as e:
+                file = e.__traceback__.tb_frame.f_globals["__file__"]
+                line = e.__traceback__.tb_lineno
+                message = LogInit.Error(file,line)
+                print(message)
+                LogInit.writeLog(logName,message=message)
 if __name__ == "__main__":
     Shell()

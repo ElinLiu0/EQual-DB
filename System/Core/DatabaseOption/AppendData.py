@@ -1,4 +1,5 @@
 from datetime import datetime
+from email import message
 from stat import S_IREAD
 import pandas as pd
 import pickle
@@ -22,4 +23,5 @@ class AppendData:
         RecoverWritter.close()
         if os.path.exists(f"Data/{self.Base}/{self.Frame}.rc"):
             os.chmod(f"Data/{self.Base}/{self.Frame}.rc",S_IREAD)
-        return df
+        message = f"Successfully append data to {self.Base}.{self.Frame}"
+        return df,message
