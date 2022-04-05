@@ -5,8 +5,19 @@ from prettytable import PrettyTable
 from time import ctime
 class ShowDataFrames:
     def __init__(self,targetBase) -> None:
+        """
+        The __init__ function is called when an instance of a class is created
+        
+        :param targetBase: The base directory where the target files are located
+        """
         self.targetBase = targetBase
     def showInfo(self,user):
+        """
+        This function is used to show the information of dataframe in the database.
+        
+        :param user: the user who is checking up the dataframe info
+        :return: A message that user is checking up dataframe info of database
+        """
         try:
             InfoTable = PrettyTable()
             FrameList = None

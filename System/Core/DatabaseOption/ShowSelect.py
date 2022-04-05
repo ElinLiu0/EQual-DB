@@ -5,6 +5,19 @@ import pandas as pd
 import json
 class ShowSelect:
     def __init__(self,targetBase,targetFrame,colRange,limation) -> None:
+        """
+        This function is used to initialize the class, and it would be called in the shell.py.
+            The parameters are:
+                targetBase: the database file name
+                targetFrame: the table name
+                colRange: the range of the column
+                Limitation: the limitation of the rows
+        
+        :param targetBase: the database you want to query from
+        :param targetFrame: the target frame you want to display
+        :param colRange: the range of columns you want to display,
+        :param limation: the limitation of the dataframe
+        """
         # in default,this varaiable would be loading the caching database from shell.py
         self.targetBase = targetBase
         self.targetFrame = targetFrame
@@ -14,6 +27,10 @@ class ShowSelect:
         self.tablefmt = "psql"
         self.showIndex = True
     def read_data(self):
+        """
+        1. Read the dataframe from the cache base.
+        2. If the dataframe is not found, raise an error
+        """
         global df
         try:
             df = pd.read_pickle(f"./{self.targetBase}/{self.targetFrame}.df")

@@ -27,7 +27,7 @@
     "python.analysis.extraPaths": [
         "/home/elin/.vscode-server/extensions/rt-thread.rt-thread-micropython-1.0.8/microExamples/code-completion"
     ],
-    "docwriter.style": "NumPy",
+    "docwriter.style": "Auto-detect",
     "docwriter.progress.trackClasses": true,
     "docwriter.progress.trackTypes": true,
     "docwriter.progress.trackFunctions": true,

@@ -9,6 +9,16 @@ import os
 from stat import *
 class ImportData:
     def __init__(self,sourcePath,targetDataBase,frameName,encoder,userAuthority,user) -> None:
+        """
+        The function is used to initialize the class
+        
+        :param sourcePath: The path to the source file
+        :param targetDataBase: The name of the database you want to connect to
+        :param frameName: The name of the frame that you want to create
+        :param encoder: The encoder to use for the frame
+        :param userAuthority: This is the authority of the user who is trying to access the data
+        :param user: The user who is running the script
+        """
         self.sourcePath = sourcePath
         self.targetDataBase = targetDataBase
         self.frameName = frameName
@@ -16,6 +26,10 @@ class ImportData:
         self.userAuthority = userAuthority
         self.user = user
     def Processing(self):
+        """
+        This function is used to import data from different source and store it in the database.
+        :return: A message.
+        """
         if self.userAuthority == "Admin":
             if ".csv" in self.sourcePath:
                 df = pd.read_csv(self.sourcePath,encoding=self.encoder)

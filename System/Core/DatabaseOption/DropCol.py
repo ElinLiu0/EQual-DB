@@ -4,6 +4,7 @@ import pickle
 from datetime import datetime
 import os
 from stat import *
+# Drop a column from a frame.
 class DropColumns:
     # By Default,this method will only can be used when select a frame from database
     def __init__(self,Base:str,Frame:str,colName) -> None:
@@ -11,6 +12,10 @@ class DropColumns:
         self.Frame = Frame
         self.colName = colName
     def Drop(self):
+        """
+        Drop a column from a dataframe
+        :return: a dataframe and a message.
+        """
         df = pd.read_pickle(f"Data/{self.Base}/{self.Frame}.df")
         df = df.drop(columns=self.colName)
         df.to_pickle(f"Data/{self.Base}/{self.Frame}.df")

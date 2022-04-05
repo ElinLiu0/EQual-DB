@@ -7,10 +7,25 @@ import os
 from datetime import datetime
 class UserRegister:
     def __init__(self,UserName,Password,Authority) -> None:
+        """
+        This function is used to create a new user
+        
+        :param UserName: The username of the user
+        :param Password: The password of the user
+        :param Authority: The authority of the user. This is a string that can be either "admin" or "user"
+        """
         self.UserName = UserName
         self.Password = Password
         self.Authority = Authority
     def DoRegiest(self):
+        """
+        This function is used to create a new user in the system.
+            The function will create a new user in the specified group.
+            The function will also create a new user's password in the specified group.
+            The function will also create a new user's authority in the specified group.
+            The function will also create a new user's password in the specified group.
+        :return: A string that contains the information of the operation.
+        """
         user = self.UserName
         password = self.Password
         authority = self.Authority

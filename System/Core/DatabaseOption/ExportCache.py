@@ -8,6 +8,9 @@ class ExportCache:
         self.format = format
         self.name = name
     def Export(self):
+        """
+        This function is used to export the data to the specified format
+        """
         if self.format == "CSV" or self.format == "csv":
             self.data.to_csv(f"Export/{self.name}.csv")
         elif self.format == "EXCEL" or self.format == "xls":

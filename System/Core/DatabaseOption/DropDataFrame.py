@@ -9,6 +9,10 @@ class DropDataFrame:
         self.targetBase = targetBase
         self.targetFrame = targetFrame           
     def Drop(self):
+        """
+        Drop a dataframe from the DataBase
+        :return: opperaion message or error.
+        """
         if os.path.exists(f"./Data/{self.targetBase}/{self.targetFrame}.df"):
             os.remove(f"./Data/{self.targetBase}/{self.targetFrame}.df")
             print(f"Successfully remove dataframe {self.targetFrame}")

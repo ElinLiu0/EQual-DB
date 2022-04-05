@@ -7,6 +7,12 @@ class ShowDataBases:
     def __init__(self) -> None:
         pass
     def showInfo(self,user):
+        """
+        This function is used to show the information of the database.
+        
+        :param user: The user who is executing the command
+        :return: A message that is being returned to the user.
+        """
         InfoTable = PrettyTable()
         BaseList = None
         BaseModifyTime = []
