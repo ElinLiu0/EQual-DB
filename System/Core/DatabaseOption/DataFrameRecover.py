@@ -5,10 +5,28 @@ import pandas as pd
 import pickle
 class DataFrameRecover:
     def __init__(self,targetDataBase,targetDataFrame,authority) -> None:
+        '''This function is used to initialize the class
+        
+        Parameters
+        ----------
+        targetDataBase
+            The name of the database to which you want to write the data.
+        targetDataFrame
+            The name of the dataframe that you want to be imported into the database.
+        authority
+            The authority of the user.
+        
+        '''
         self.targetDataBase = targetDataBase
         self.targetDataFrame = targetDataFrame
         self.authority = authority
     def Recovering(self):
+        '''
+        Return
+        -------
+            a message that the operation was done.
+        
+        '''
         login_user_sys = os.popen("whoami").read().replace("\n", "")
         login_user_sys_authority = (
             os.popen(f"groups {login_user_sys}").read().replace(f"{login_user_sys} : ", "").split(" ")

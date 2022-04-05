@@ -11,6 +11,9 @@ class DropRow:
         self.Frame = Frame
         self.RowIndex = RowIndex
     def Drop(self):
+        """
+        # Drop is a class that can be used to drop a row from a frame.
+        """
         df = pd.read_pickle(f"Data/{self.Base}/{self.Frame}.df")
         df = df.drop(index=self.RowIndex)
         df.to_pickle(f"Data/{self.Base}/{self.Frame}.df")

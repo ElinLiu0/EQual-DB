@@ -5,6 +5,7 @@ class SpeedTest:
     def __init__(self) -> None:
         pass
     def test(self):
+        # `test` is a function that is used to test the performance of the disk.
         print("Starting Disk Performance Test Now...")
         wSpeed = []
         rSpeed = []

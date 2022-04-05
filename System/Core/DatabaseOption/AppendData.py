@@ -7,6 +7,20 @@ import os
 class AppendData:
     # By Default,this method will only can be used when select a frame from database
     def __init__(self,Base,Frame,Data) -> None:
+        '''The __init__ method is the most important method in a class. 
+        This is called when an instance (object) of the class is created, using the class name as a
+        function
+        
+        Parameters
+        ----------
+        Base
+            The database of dataframe that you want to append to.
+        Frame
+            The dataframe that you want to append the data to.
+        Data
+            The data that you want to append to the dataframe.
+        
+        '''
         # Recive a Pandas Dataframe
         self.Base = Base
         self.Frame = Frame
@@ -15,6 +29,13 @@ class AppendData:
         # The appending data should like : [data]
         self.Data = Data
     def Append(self):
+        '''Append data to a dataframe and create a recovery checkup file
+        
+        Returns
+        -------
+            The dataframe and a message
+        
+        '''
         df = pd.read_pickle(f"Data/{self.Base}/{self.Frame}.df")
         df = df.append(self.Data)
         df.to_pickle(f"Data/{self.Base}/{self.Frame}.df")
