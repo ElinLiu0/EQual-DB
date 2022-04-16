@@ -25,3 +25,12 @@ Also you can join my porject to help me improve JessiseDB Better.
     - Add I/O function : Insert,Append,Drop(Cols/Rows)
     - Split two function : Export/Save Cache,to allow user do more option on caching datastream
     - Remaking bin file
+  - 2022/3/???
+    - Add Logs For Main Process Crashing Recheck
+    - Using AI Document Plugin to create Document
+  - 2022/4/14
+    - Rechanging All command into lower case.
+  - 2022/4/16
+    - Fetching New File  Strcture,in utils,you can find buildNuitka.sh to use Nuitka Moudle to Build JessiseDB into bin file.Default output path is build folder at project root
+    - Add Re Authorization and Drop User function
+    - Rewriting the Select class,only now avaliable function is normally shown.Will be add Mathmetical Selection and lambda express selection in Future.

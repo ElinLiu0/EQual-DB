@@ -1,4 +1,3 @@
-print("Initalizing Moudles ...")
 from System.Core.DatabaseOption.CreateDataBase import CreateDataBase
 from System.Core.DatabaseOption.CreateDataFrame import CreateDataFrame
 from System.Core.DatabaseOption.CurrentVersion import CurrentVersion
@@ -20,6 +19,8 @@ from System.Core.DatabaseOption.DropRow import DropRow
 from System.Core.DatabaseOption.InsertCols import InsertColumns
 from utils.logs.logs import LogsInit
 from utils.Test.Speedtest import SpeedTest
+from System.Core.UserOption.Dropuser import DropUser
+from System.Core.UserOption.ReAuth import ReAuth
 import re
 import os
 import time
@@ -57,7 +58,7 @@ def Shell():
                     break
                 # This CLI Command Should Like : CREATE DATABASE 'database_name',
                 # and system will automatically makeing.
-                elif re.match("CREATE DATABASE",recieve) != None:
+                elif re.match("create database",recieve) != None:
                     try:
                         boot = CreateDataBase(BaseName=recieve[16:],userAuthority=UserInfo['authority'])
                         message = LogInit.Sucess(boot.Make())
@@ -69,11 +70,11 @@ def Shell():
                         print(message)
                         LogInit.writeLog(logName,message=message)
                 # This method is should Create a blank dataframe for the database which specified as keyword
-                elif re.match("CREATE DATAFRAME",recieve) != None:
-                    startIndex = recieve.index("DATAFRAME")+len("DATAFRAME")
-                    IndexFor = recieve.index("FOR")+len("FOR")
-                    IndexWith = recieve.index("WITH")
-                    IndexWithStart = recieve.index("WITH")+len("WITH")
+                elif re.match("create dataframe",recieve) != None:
+                    startIndex = recieve.index("dataframe")+len("dataframe")
+                    IndexFor = recieve.index("for")+len("for")
+                    IndexWith = recieve.index("with")
+                    IndexWithStart = recieve.index("with")+len("with")
                     # so the full CLI command should be : CREATE DATAFRAME 'dataframe_name' FOR 'database_name' \
                     # with [{data(should wrote the data like JSON froamt)}]
                     try:
@@ -89,19 +90,19 @@ def Shell():
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)        
-                elif recieve == "TEMP VERSION":
+                elif recieve == "version":
                     CurrentVersion()               
                 # The Full CLI Command Should Like : IMPORT DATA FROM 'sourcePath' TO 'database'.'dataframe WITH 'encoder'
-                elif re.match("IMPORT DATA FROM",recieve) != None:
+                elif re.match("import data from",recieve) != None:
                     try:
-                        fromIndex = recieve.index("FROM")
-                        ToIndex = recieve.index("TO")
-                        WithIndex = recieve.index("WITH")
+                        fromIndex = recieve.index("from")
+                        ToIndex = recieve.index("to")
+                        WithIndex = recieve.index("with")
                         baseAndFrame = recieve[ToIndex + 2 : WithIndex].replace(" ","")
                         sourcePath = recieve[fromIndex + 4:ToIndex].replace(" ","")
                         targetBase = baseAndFrame[:baseAndFrame.index(".")]
                         targetFrame = baseAndFrame[baseAndFrame.index(".") + 1 : ]
-                        encoder = recieve[WithIndex + len('WITH') : ]
+                        encoder = recieve[WithIndex + len('with') : ]
                         # This usallly need to a database create before
                         # for example : IMPORT DATA FROM {url_path} TO test.test WITH UTF-8
                         # thats need you exist database test before importing data.
@@ -115,7 +116,7 @@ def Shell():
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif recieve == "SHOW DATABASES":
+                elif recieve == "show databases":
                     try:
                         boot = ShowDataBases()
                         message = LogInit.Sucess(boot.showInfo(user=UserInfo['name']))
@@ -126,7 +127,7 @@ def Shell():
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif recieve == "SHOW DATAFRAMES":
+                elif recieve == "show dataframes":
                     try:
                         boot = ShowDataFrames(targetBase=caching_database)
                         message = LogInit.Sucess(boot.showInfo())
@@ -138,10 +139,10 @@ def Shell():
                         print(message)
                         LogInit.writeLog(logName,message=message)
                 # The CLI Command Line Should be like : ADD USER 'user_name' TO 'user_group(admin or nonadmin)'
-                elif re.match("ADD USER",recieve) != None:
+                elif re.match("add user",recieve) != None:
                     if os.popen("whoami").read().replace("\n","") == "root":
-                        startIndex = recieve.index("USER")
-                        endIndex = recieve.index("TO")
+                        startIndex = recieve.index("user")
+                        endIndex = recieve.index("to")
                         addUserName = recieve[startIndex + 4 : endIndex].replace(" ","")
                         addUserAuthority = recieve[endIndex + 2:].replace(" ","")
                         addUserPasswd = getpass(f"Specify the password of {addUserName} to continue : ")
@@ -157,7 +158,7 @@ def Shell():
                             LogInit.writeLog(logName,message=message)                
                     else:
                         print("ERR : Can not make resgisteration of user under none root login!")            
-                elif recieve == "SHOW DISK USAGE":
+                elif recieve == "usage":
                     try:
                         boot = ShowUsage()
                         boot.showUsage()                 
@@ -168,9 +169,9 @@ def Shell():
                         print(message)
                         LogInit.writeLog(logName,message=message)             
                 # The CLI Command Line should like : RECOVER 'targetDataBase.targetDataFrame'
-                elif re.match("RECOVER",recieve) != None:
+                elif re.match("recover",recieve) != None:
                     dotIndex = recieve.index(".")
-                    targetBase = recieve[:dotIndex].replace("RECOVER ","")
+                    targetBase = recieve[:dotIndex].replace("recover ","")
                     targetFrame = recieve[dotIndex + 1 : ]
                     try:
                         boot = DataFrameRecover(targetDataBase=targetBase,targetDataFrame=targetFrame)
@@ -183,7 +184,7 @@ def Shell():
                         print(message)
                         LogInit.writeLog(logName,message=message)
                         
-                elif re.match("DROP DATABASE",recieve) != None:
+                elif re.match("drop database",recieve) != None:
                     try:
                         boot = DropDataBase(targetBase=caching_database,userAuthority=UserInfo['authority'])    
                         message = LogInit.Sucess(boot.Drop())
@@ -195,10 +196,10 @@ def Shell():
                         print(message)
                         LogInit.writeLog(logName,message=message)
                 # The Drop DataFrame CLI Should Like : DROP DATAFRAME 'database'.'dataframe'
-                elif re.match("DROP DATAFRAME",recieve) != None:
+                elif re.match("drop dataframe",recieve) != None:
                     dotIndex = recieve.index(".")
                     targetFrame = recieve[dotIndex :].replace(" ","")
-                    targetBase = recieve[:dotIndex].replace("DROP DATAFRAME ","")
+                    targetBase = recieve[:dotIndex].replace("drop dataframe ","")
                     try:
                         boot = DropDataFrame(targetBase=targetBase,targetFrame=targetFrame)
                         message = LogInit.Sucess(boot.Drop())
@@ -209,8 +210,8 @@ def Shell():
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif re.match("USE DATABASE",recieve) != None:
-                    dataBaseUsed = recieve[recieve.index('DATABASE') + len('DATABASE'):].replace(" ","")
+                elif re.match("use database",recieve) != None:
+                    dataBaseUsed = recieve[recieve.index('database') + len('database'):].replace(" ","")
                     try:
                         boot = UseDataBase(targetBase=dataBaseUsed)
                         status,message = boot.useBase()
@@ -227,7 +228,7 @@ def Shell():
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif recieve == "SPEEDTEST":
+                elif recieve == "test speed":
                     try:
                         boot = SpeedTest()
                         boot.test()
@@ -237,75 +238,42 @@ def Shell():
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)   
-                elif re.match("SELECT",recieve) != None:
-                    # Defaultly CLI command should like a normal sql like command 
-                    # Example : SELECT * FROM {frame_name}
-                    fromIndex = recieve.index('FROM')
-                    extract =  recieve[recieve.index('SELECT') + len('SELECT') : fromIndex] 
-                    usingFrame = recieve[fromIndex + 4:]
-                    caching_frame_name = usingFrame
-                    # With limitation example should like 
-                    # Example : SELECT * FROM {frame_name} LIMIT {an integer limitation,
-                    # default 5000,can over it if need!}
-                    global limitation
-                    limitation = None
-                    if "LIMIT" in recieve:
-                        limitIndex = recieve.index("LIMIT")
-                        limitation = int(recieve[limitIndex + len('LIMIT') :])
-                    else:
-                        pass
+                elif re.match("select",recieve) != None:
                     try:
-                        if limitation != None:
-                            if caching_database != None:
-                                boot = ShowSelect(targetBase=caching_database,targetFrame=usingFrame,colRange=extract,limation=limitation)
+                        frame = recieve[recieve.index("from")+4 :].replace(" ","")
+                        colRange = recieve[recieve.index("*")+1 : recieve.index("from")].replace(" ","")
+                        if "limit" in recieve:
+                            limit = float(recieve[recieve.index("limit") + 5:].replace(" ",""))
                         else:
-                            if caching_database != None:
-                                boot = ShowSelect(targetBase=caching_database,targetFrame=usingFrame,colRange=extract,limation=np.inf)
-                        # Do mathmetic checking
-                        # This method allows user do multiple complex mathmetic functions
-                        # But the coloumns should default with 'df' on it or API wouldnt do the process
-                        # such as : SELECT df['a']+df['b'] FROM {frame_name}
-                        math_symblos = ["*","^","-","+","/","%","//"]
-                        for i in extract:
-                            # if mathmetic symbols in extract command areas
-                            if i in math_symblos:
-                                # Then do mathShown() methods
-                                caching_dataframe = boot.mathShown()
-                                print(f"INFO : Switching frame {usingFrame}")
-                        # Do lambda checking
-                        # This method allows user wrote a full lambda expression to use
-                        # Just like the normal way you do on Pandas
-                        # such as : SELECT df['tf'] = df['yn'].apply(lambda x:True if x == 'yes' else False) FROM {frame_name}
-                        if "lambda" in extract:
-                            caching_dataframe = boot.lambdaShown()
-                            print(f"INFO : Switching frame {usingFrame}")
-                        else:
-                            caching_dataframe = boot.shown()
-                            print(f"INFO : Switching frame {usingFrame}")
+                            limit = None
+                        boot = ShowSelect(targetBase=caching_database,targetFrame=frame,colRange=colRange,limation=limit)
+                        message = LogInit.Sucess(boot.shown())
+                        LogInit.writeLog(message=message)
                     except Exception as e:
                             file = e.__traceback__.tb_frame.f_globals["__file__"]
                             line = e.__traceback__.tb_lineno
                             message = LogInit.Error(file,line)
                             print(message)
                             LogInit.writeLog(logName,message=message)
-                elif recieve == "WHICH BASE":
+                elif recieve == "cashed base":
                     # This command could tell the user that which database now caching in memory
                     # To activate the caching_database variable,need to use "USE DATABASE" func first
                     print(f"Currently caching with database : {caching_database}")   
                 # Example : EXPORT CACHE AS (export_file_name) IN (export_file_format)
-                elif re.match("EXPORT CACHE AS",recieve) != None:
-                    save_name = recieve[recieve.index('AS') + len('AS') : recieve.index('IN')].replace("")
-                    save_format =  recieve[recieve.index('IN') + len('IN') : ].replace(" ","")
+                elif re.match("export cache as ",recieve) != None:
+                    save_name = recieve[recieve.index('as') + len('as') : recieve.index('in')].replace("")
+                    save_format =  recieve[recieve.index('in') + len('in') : ].replace(" ","")
                     try:
                         boot = ExportCache(data=caching_dataframe,name=save_name,format=save_format)
-                        boot.Export()
+                        message = LogInit.Sucess(boot.Export())
+                        LogInit.writeLog(message=message)
                     except Exception as e:
                         file = e.__traceback__.tb_frame.f_globals["__file__"]
                         line = e.__traceback__.tb_lineno
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif re.match("APPEND DATA TO",recieve) != None:
+                elif re.match("append data to",recieve) != None:
                     # By Default,this method will only can be used when select a frame from database
                     # It not only can be insert a row datastream,you can even use this method to 
                     # merging two same cols dataframe
@@ -320,35 +288,35 @@ def Shell():
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif re.match("DROP COLS",recieve) != None:
+                elif re.match("drop cols",recieve) != None:
                     # This method allows user to given a paramiter as list type to drop multiple cols
-                    colName = recieve[recieve.index("COLS")]
+                    colName = recieve[recieve.index("cols")]
                     try:
                         boot = DropColumns(Base=caching_database,Frame=caching_dataframe,colName=colName)
                         caching_dataframe,message = boot.Drop()
                         message = LogInit.Sucess(message=message)
-                        LogInit.writeLog(message=message)
+                        LogInit.writeLog(logName,message=message)
                     except Exception as e:
                         file = e.__traceback__.tb_frame.f_globals["__file__"]
                         line = e.__traceback__.tb_lineno
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif re.match("DROP ROWS",recieve) != None:
+                elif re.match("drpw rows",recieve) != None:
                     # This method allows user to given a paramiter as list type to drop multiple cols
-                    RowIndex = recieve[recieve.index("ROWS")]
+                    RowIndex = recieve[recieve.index("rows")]
                     try:
                         boot = DropRow(Base=caching_database,Frame=caching_dataframe,RowIndex=RowIndex)
                         caching_dataframe,message = boot.Drop()
                         message = LogInit.Sucess(message=message)
-                        LogInit.Sucess(message=message)
+                        LogInit.writeLog(logName,message=message)
                     except Exception as e:
                         file = e.__traceback__.tb_frame.f_globals["__file__"]
                         line = e.__traceback__.tb_lineno
                         message = LogInit.Error(file,line)
                         print(message)
                         LogInit.writeLog(logName,message=message)
-                elif re.match("INSERT COLS",recieve) != None:
+                elif re.match("insert cols",recieve) != None:
                     withIndex = recieve[recieve.index("WITH")]
                     colIndex = recieve[recieve.index("COLS")]
                     colName = recieve[colIndex + len("COLS") : withIndex].replace(" ","")
@@ -357,6 +325,30 @@ def Shell():
                         boot = InsertColumns(Base=caching_database,Frame=caching_frame_name,colName=colName,colData=data)
                         caching_dataframe,message = boot.Insert()
                         message = LogInit.Sucess(message=message)
+                        LogInit.writeLog(logName,message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
+                elif re.match("drop user",recieve) != None:
+                    targetUser = recieve[recieve.index("user")+4 : ].replace(" ","")
+                    try:
+                        boot = DropUser(ua=UserInfo['authority'])
+                        message = LogInit.Sucess(boot.DropUser(targetUser=targetUser))
+                        LogInit.writeLog(logName,message=message)
+                    except Exception as e:
+                        file = e.__traceback__.tb_frame.f_globals["__file__"]
+                        line = e.__traceback__.tb_lineno
+                        message = LogInit.Error(file,line)
+                        print(message)
+                        LogInit.writeLog(logName,message=message)
+                elif re.match("reauth user",recieve) != None:
+                    targetUser = recieve[recieve.index("user")+4 : ].replace(" ","")
+                    try:
+                        boot = ReAuth(ua=UserInfo['authority'],sysua=os.popen("whoami").read().replace("\n",""))
+                        message = LogInit.Sucess(boot.ReAuth(targetUser=targetUser))
                         LogInit.writeLog(logName,message=message)
                     except Exception as e:
                         file = e.__traceback__.tb_frame.f_globals["__file__"]

@@ -37,36 +37,36 @@ class ShowSelect:
         except Exception as Error:
             raise FileNotFoundError(f"ERR : Not found dataframe {self.targetFrame} in caching base.Operation refused!")     
     def shown(self):
-        if self.colRange == "*":
-            # use Pandas DataFrame Directly from Memory 
-            if df.shape[0] <= self.Limitation:
-                shownFrame = tabulate(df,headers=self.headers,tablefmt=self.tablefmt)
-                print(shownFrame)
-                return df
-            else:
-                print(f"WAR : Dataframe shape is over default limitation!Shown previous {self.Limitation} lines below.")
-        elif type(self.colRange) == str and self.colRange != "*":
-            shownFrame = tabulate(pd.DataFrame(df[self.colRange][0:self.Limitation]),headers=self.headers,tablefmt=self.tablefmt)
-            return pd.DataFrame(df[self.colRange][0:self.Limitation])
-        elif type(self.colRange) == list:
-            shownFrame = tabulate(pd.DataFrame(df.loc[:,self.colRange][0:self.Limitation]),headers=self.headers,tablefmt=self.tablefmt)
-            return df.loc[:,self.colRange][0:self.Limitation]
-        print(shownFrame)
-    def mathShown(self):
-        math_symblos = ["*","^","-","+","/","%","//"]
-        if type(self.colRange) == str:
-            for i in self.colRange:
-                if i in math_symblos:
-                    shownFrame = tabulate(pd.DataFrame(exec(self.colRange))[0:self.Limitation],headers=self.headers,tablefmt=self.tablefmt)
-                    print(shownFrame)
-                    return pd.DataFrame(exec(self.colRange))[0:self.Limitation]
-                else:
-                    pass
-    def lambdaShown(self):
-        if type(self.colRange) == str:
-            if "lambda" in self.colRange:
-                shownFrame = tabulate(pd.DataFrame(exec(self.colRange))[0:self.Limitation],headers=self.headers,tablefmt=self.tablefmt)
-                print(shownFrame)
-                return pd.DataFrame(exec(self.colRange))[0:self.Limitation]
-            else:
-                pass
+        """
+        Params :
+            colRange : Which a specified keyword or list like parameter
+            Limitation : Which is a float keyword that specified for limitation returns
+        Returns :
+            Dataframe Object
+        """
+        if self.colRange == "*" and self.Limitation == None:
+            QueryResult = df
+            return QueryResult
+        elif self.colRange == "*" and self.Limitation is not None:
+            QueryResult = df.loc[:,self.colRange][0:self.Limitation]
+            return QueryResult
+        elif self.colRange != "*" and self.Limitation == None:
+            colRange = None
+            exec("colRange=self.colRange")
+            QueryResult = df.loc[:,colRange]
+            return QueryResult
+        elif self.colRange != "*" and self.Limitation is not None:
+            colRange = None
+            exec("colRange=self.colRange")
+            QueryResult = df.loc[:,colRange][0:self.Limitation]
+            return QueryResult
+        elif self.colRange is "":
+            raise TypeError("Invalid Query Colrange Received!")
+    def mathMetic(self):
+        if self.colRange is "":
+            raise TypeError("Invalid Query Colrange Received!")
+        else:
+            colRange = None
+            exec("colRange=self.colRange")
+            pass
+
