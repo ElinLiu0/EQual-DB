@@ -2,10 +2,10 @@ from datetime import datetime
 class LogsInit:
     def __init__(self,logdir) -> None:
         self.logdir = logdir
-    def Error(self,file,line):
-        return f"[{datetime.now()}][Error] There was error occured in file {file} at line {line}."
-    def Warn(self,file,line):
-        return f"[{datetime.now()}][Warn] Opearation occured a warn in file {file} at line {line}."
+    def Error(self,message):
+        return f"[{datetime.now()}][Error] There was error occured by {message}."
+    def Warn(self,warns):
+        return f"[{datetime.now()}][Warn] Opearation occured a warn alert : {warns}."
     def Sucess(self,message):
         return f"[{datetime.now()}][Success]Functions Run Success.Message :{message}"
     def LoginSuccess(self,user):

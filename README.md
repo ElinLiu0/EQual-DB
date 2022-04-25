@@ -1,8 +1,8 @@
-This is the Beta Test branch of JessiseDB.
+This is the Beta Test branch of EQualDB(Renamed from JessiseDB).
 
 You can point out whatever issuse that you find out.
 
-Also you can join my porject to help me improve JessiseDB Better.
+Also you can join my porject to help me improve EQualDB Better.
 
 - Current Update History
   ----------------------
@@ -34,3 +34,7 @@ Also you can join my porject to help me improve JessiseDB Better.
     - Fetching New File  Strcture,in utils,you can find buildNuitka.sh to use Nuitka Moudle to Build JessiseDB into bin file.Default output path is build folder at project root
     - Add Re Authorization and Drop User function
     - Rewriting the Select class,only now avaliable function is normally shown.Will be add Mathmetical Selection and lambda express selection in Future.
+  - 2022/4/20
+    - Rewrtie all response in main logic into json type.
+    - Delete CPU Branch and will only focus on GPU comupting and storage.
+    - Rename from JessiseDB into EQualDB yet.
