@@ -38,3 +38,5 @@ Also you can join my porject to help me improve EQualDB Better.
     - Rewrtie all response in main logic into json type.
     - Delete CPU Branch and will only focus on GPU comupting and storage.
     - Rename from JessiseDB into EQualDB yet.
+  - 2022/4/25
+    - Stable configured.

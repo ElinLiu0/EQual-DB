@@ -35,7 +35,7 @@ class ShowDataFrames:
                     FrameEncoding.append(chardet.detect(data)['encoding'])
             responseJson = {
                 "execCode":"OK",
-                "DataBaseAre":[{
+                "DataFramesAre":[{
                     "BaseName":FrameList[i],
                     "CreatBy":FrameCreateBy[i],
                     "LastModify":FrameModifyTime[i],
