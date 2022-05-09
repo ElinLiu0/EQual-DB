@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EqualDB-GPU DataStorage Based On Python and Rapids</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.css" rel="stylesheet">
+    <link rel="icon" href="imgs/icon.png">
+    <link href="https://cdn.bootcdn.net/ajax/libs/mui/3.7.1/css/mui.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/mui/3.7.1/js/mui.js"></script>
+</head>
+<body>
+    <!-- This example requires Tailwind CSS v2.0+ -->
+<div class="relative bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+      <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+        <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <polygon points="50,0 100,0 50,100 0,100" />
+        </svg>
+  
+        <div>
+          <div class="relative pt-6 px-4 sm:px-6 lg:px-8">
+            <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
+              <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
+                <div class="flex items-center justify-between w-full md:w-auto">
+                  <a href="#">
+                    <span class="sr-only">Workflow</span>
+                    <img class="h-8 w-auto sm:h-10" src="imgs/icon.png">
+                  </a>
+                  <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                      <span class="sr-only">Open main menu</span>
+                      <!-- Heroicon name: outline/menu -->
+                      <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
+                <a href="https://github.com/RosterMouch" class="font-medium text-gray-500 hover:text-gray-900">About Author</a>
+                <a href="https://github.com/RosterMouch/EQual-DB" class="font-medium text-gray-500 hover:text-gray-900">Project Repo</a>
+              </div>
+            </nav>
+          </div>
+  
+          <!--
+            Mobile menu, show/hide based on menu open state.
+  
+            Entering: "duration-150 ease-out"
+              From: "opacity-0 scale-95"
+              To: "opacity-100 scale-100"
+            Leaving: "duration-100 ease-in"
+              From: "opacity-100 scale-100"
+              To: "opacity-0 scale-95"
+          -->
+          <div class="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
+            <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+              <div class="px-5 pt-4 flex items-center justify-between">
+                <div>
+                  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="">
+                </div>
+                <div class="-mr-2">
+                  <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                    <span class="sr-only">Close main menu</span>
+                    <!-- Heroicon name: outline/x -->
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="https://github.com/RosterMouch" class="font-medium text-gray-500 hover:text-gray-900">About Author</a>
+                <a href="https://github.com/RosterMouch/EQual-DB" class="font-medium text-gray-500 hover:text-gray-900">Project Repo</a>
+            </div>
+          </div>
+        </div>
+  
+        <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+          <div class="sm:text-center lg:text-left">
+            <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+              <span class="block xl:inline">GPU Accelerate Data Storage</span>
+              <span class="block text-indigo-600 xl:inline" style="color:#76b900">Based On Python</span>
+            </h1>
+            <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+              EqualDB is a Python Language and Rapids API Based Database.But Inspired by the power of GPU Acceleration and panel data,The EqualDB now is right here.Design for HPC and High Density Computing.
+            </p>
+            <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+              <button type="button" class="btn btn-outline-secondary btn-lg px-4" style="background-color: #77b900;color:aliceblue;border-color:aliceblue">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16" style="float: left;margin-top:6px;">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                </svg>&nbsp;&nbsp;Get Started
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+      <img class="h-1/2 w-full object-cover sm:h-1/2  md:h-1/2 lg:w-full lg:h-1/2" src="imgs/nvidia-data-science-solutions-data-center-4c25-d@2x.jpg" alt="">
+    </div>
+  </div>
+  <!-- This example requires Tailwind CSS v2.0+ -->
+<div class="py-12 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:text-center">
+      <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase" style="color: #76b900;">Intro</h2>
+      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">A better way to high density and data storage</p>
+      <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">"The more you buy,the more you save".This means to GPUs,but not means to EqualDB.EqualDB is fully opensource platform based on Python Rapids API and CUDA,this means EuqalDB is super easy for DataScientist and DataEngineer to get GPU Horse Power.</p>
+    </div>
+
+    <div class="mt-10">
+      <dl class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+        <div class="relative">
+          <dt>
+            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+              <!-- Heroicon name: outline/globe-alt -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-speedometer2" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
+                <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
+              </svg>
+            </div>
+            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Speed</p>
+          </dt>
+          <dd class="mt-2 ml-16 text-base text-gray-500">Storaged on disk,Transfer in GPUs.By using regularly CPU I/O,to using GPUs into increasing the Parallel Computbility and I/O BandWith.</dd>
+        </div>
+
+        <div class="relative">
+          <dt>
+            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+              <!-- Heroicon name: outline/scale -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code-slash" viewBox="0 0 16 16">
+                <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0z"/>
+              </svg>
+            </div>
+            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Debug</p>
+          </dt>
+          <dd class="mt-2 ml-16 text-base text-gray-500">Based On Python,Thats means EqualDB is super easy for beginner,data scientist and structure engineers.</dd>
+        </div>
+
+        <div class="relative">
+          <dt>
+            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+              <!-- Heroicon name: outline/lightning-bolt -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-safe" viewBox="0 0 16 16">
+                <path d="M1 1.5A1.5 1.5 0 0 1 2.5 0h12A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 1 14.5V13H.5a.5.5 0 0 1 0-1H1V8.5H.5a.5.5 0 0 1 0-1H1V4H.5a.5.5 0 0 1 0-1H1V1.5zM2.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5h-12z"/>
+                <path d="M13.5 6a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zM4.828 4.464a.5.5 0 0 1 .708 0l1.09 1.09a3.003 3.003 0 0 1 3.476 0l1.09-1.09a.5.5 0 1 1 .707.708l-1.09 1.09c.74 1.037.74 2.44 0 3.476l1.09 1.09a.5.5 0 1 1-.707.708l-1.09-1.09a3.002 3.002 0 0 1-3.476 0l-1.09 1.09a.5.5 0 1 1-.708-.708l1.09-1.09a3.003 3.003 0 0 1 0-3.476l-1.09-1.09a.5.5 0 0 1 0-.708zM6.95 6.586a2 2 0 1 0 2.828 2.828A2 2 0 0 0 6.95 6.586z"/>
+              </svg>
+            </div>
+            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Ecology</p>
+          </dt>
+          <dd class="mt-2 ml-16 text-base text-gray-500">Based on NVIDIA CUDA Platform,which means you can use the feature like nv-link to Multi up the GPU Power or using BlueField™ DPU to make your platform more security.</dd>
+        </div>
+
+        <div class="relative">
+          <dt>
+            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+              <!-- Heroicon name: outline/annotation -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-server" viewBox="0 0 16 16">
+                <path d="M1.333 2.667C1.333 1.194 4.318 0 8 0s6.667 1.194 6.667 2.667V4c0 1.473-2.985 2.667-6.667 2.667S1.333 5.473 1.333 4V2.667z"/>
+                <path d="M1.333 6.334v3C1.333 10.805 4.318 12 8 12s6.667-1.194 6.667-2.667V6.334a6.51 6.51 0 0 1-1.458.79C11.81 7.684 9.967 8 8 8c-1.966 0-3.809-.317-5.208-.876a6.508 6.508 0 0 1-1.458-.79z"/>
+                <path d="M14.667 11.668a6.51 6.51 0 0 1-1.458.789c-1.4.56-3.242.876-5.21.876-1.966 0-3.809-.316-5.208-.876a6.51 6.51 0 0 1-1.458-.79v1.666C1.333 14.806 4.318 16 8 16s6.667-1.194 6.667-2.667v-1.665z"/>
+              </svg>
+            </div>
+            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Augmentability</p>
+          </dt>
+          <dd class="mt-2 ml-16 text-base text-gray-500">Based Python CUDA,this means you can use C/C++ to write the plugins for EqualDB,otherwise you can use Cython or other Py2C Tools to compile into C based files.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+<footer class="mastfoot mt-auto">
+  <div class="inner">
+    <p style="text-align: center;">EqualDB Powered By Python and Rapids<br/>by@RosterMouch</p>
+  </div>
+</footer>
+</body>
+</html>
