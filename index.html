@@ -10,6 +10,61 @@
     <link rel="icon" href="imgs/icon.png">
     <link href="https://cdn.bootcdn.net/ajax/libs/mui/3.7.1/css/mui.css" rel="stylesheet">
     <script src="https://cdn.bootcdn.net/ajax/libs/mui/3.7.1/js/mui.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.js"></script>
+    <style>
+      ul.timeline {
+    list-style-type: none;
+    position: relative;
+}
+ul.timeline:before {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: 40px;
+    width: 2px;
+    height: 100%;
+    z-index: 400;
+}
+ul.timeline > li {
+    margin: 20px 0;
+    padding-left: 30px;
+}
+ul.timeline > li:before {
+    content: ' ';
+    background: white;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid #76b900;
+    left: 30px;
+    width: 20px;
+    height: 20px;
+    z-index: 400;
+}
+#img1{
+width: 400px;
+height: 200px;
+float: left;
+}
+#img2{
+  width: 30%;
+  height: 200px;
+  float: left;
+}
+#img3{
+  width: 30%;
+  height: 100px;
+  float: left;
+}
+#img4{
+  width: 300px;
+  height: 200px;
+  float: left;
+  margin-left: 100px;
+}
+    </style>
 </head>
 <body>
     <!-- This example requires Tailwind CSS v2.0+ -->
@@ -101,7 +156,7 @@
       </div>
     </div>
     <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-      <img class="h-1/2 w-full object-cover sm:h-1/2  md:h-1/2 lg:w-full lg:h-1/2" src="imgs/nvidia-data-science-solutions-data-center-4c25-d@2x.jpg" alt="">
+      <img class="h-1/4 w-full object-cover sm:h-1/4  md:h-1/4 lg:w-full lg:h-1/4" src="imgs/nvidia-data-science-solutions-data-center-4c25-d@2x.jpg" alt="">
     </div>
   </div>
   <!-- This example requires Tailwind CSS v2.0+ -->
@@ -174,10 +229,85 @@
     </div>
   </div>
 </div>
-<footer class="mastfoot mt-auto">
-  <div class="inner">
-    <p style="text-align: center;">EqualDB Powered By Python and Rapids<br/>by@RosterMouch</p>
-  </div>
-</footer>
+<div class="py-12 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:text-center">
+      <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase" style="color: #76b900;">Future RoadMap</h2>
+      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">What we will do in future?</p>
+      <div id="roadmap">
+        <div class="container mt-5 mb-5">
+          <div class="row">
+            <div class="col-md-6 offset-md-3">
+              <ul class="timeline">
+                <li>
+                  <p>
+                    Let the project run regularly and keep up with the latest updates.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Let EqualDB can run with JS,Python,C/C++,Java and more Languages.
+                  </p>
+                </li>
+                <li>
+                  <p style="margin-left: 15px;">
+                    Let EqualDB can run with GPU,DPU and more Devices.With NV-LINK™ and BlueField™ Stack.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Let EqualDB be cloud native GPU native database.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>
+<div class="py-12 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:text-center">
+      <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase" style="color: #76b900;">Stack Introduce</h2>
+      <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Our Project based on these stacks</p>
+      <img id="img1"
+      src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.fairyhorn.cc%2Fwp-content%2Fuploads%2F2018%2F05%2F1_wftg0qejZenhJjlqXZcy1w.png&refer=http%3A%2F%2Fwww.fairyhorn.cc&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1654949745&t=8d06b93fadda09dc13fc3780e4a0a938">
+      <img id="img2"
+      src="https://www.nvidia.com/content/dam/en-zz/Solutions/about-nvidia/logo-and-brand/01-nvidia-logo-horiz-500x200-2c50-d.png">
+      <img id="img3"
+      src="https://www.python.org/static/img/python-logo@2x.png">
+      <img id="img4"
+      src="https://rapids.ai/assets/images/RAPIDS-cloud.png">
+    </div>
+  </div>  
+</div>
+<div class="container">
+  <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+    <div class="col mb-3">
+      <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+        <img src="../imgs/icon.ico" alt="" style="width: 50px;height: 50px;">
+      </a>
+      <p class="text-muted">@Team EqualDB 2022</p>
+    </div>
+
+    <div class="col mb-3">
+
+    </div>
+
+    <div class="col mb-3">
+      <h5>Sections</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="https://developer.nvidia.com/cuda-toolkit" class="nav-link p-0 text-muted">About CUDA</a></li>
+        <li class="nav-item mb-2"><a href="https://www.anaconda.com/" class="nav-link p-0 text-muted">About Anaconda</a></li>
+        <li class="nav-item mb-2"><a href="https://github.com/RosterMouch/EQual-DB" class="nav-link p-0 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16" style="float: left;">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>&nbsp;&nbsp;Project Repo</a></li>
+        <li class="nav-item mb-2"><a href="https://github.com/RosterMouch?tab=repositories" class="nav-link p-0 text-muted">Other Projects</a></li>
+      </ul>
+    </div>
+  </footer>
+</div>
 </body>
 </html>
