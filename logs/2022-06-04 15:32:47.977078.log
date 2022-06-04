@@ -1,0 +1,3 @@
+[2022-06-04 15:32:50,727][INFO][root]: user Elin has login to server.
+[2022-06-04 15:32:50,727][INFO][root]: Successfully initialize caching database and dataframe.
+[2022-06-04 15:32:58,022][ERROR][root]: [Errno 17] File exists: 'Data/'in file/root/EQual-DB/EqualDB.pyat61

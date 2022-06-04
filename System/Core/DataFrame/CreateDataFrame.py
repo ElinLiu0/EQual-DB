@@ -6,7 +6,7 @@ import cudf as cf
 import pickle
 from stat import *
 class CreateDataFrame:
-    def __init__(self,database,frameName,data):
+    def __init__(self,database,frameName,data,user):
         '''Create a new frame with the given name and data
         
         Parameters
@@ -22,6 +22,7 @@ class CreateDataFrame:
         self.frameName = frameName
         self.database = database
         self.data = data
+        self.user = user
     def Create(self):
         '''Create a Dataframe and save it in a pickle file
         
@@ -44,4 +45,6 @@ class CreateDataFrame:
             "message":f"Successfully Create Dataframe {self.database}.{self.frameName}",
             "dataSize":f"{df.shape[0]} by {df.shape[1]}"
         }
-        return json.dumps(message,indent=True,ensure_ascii=True,sort_keys=True)
+        print(json.dumps(message,indent=True,ensure_ascii=True,sort_keys=True))
+        logMessage = f"{self.user} has create a new dataframe {self.database}.{self.frameName}"
+        return logMessage

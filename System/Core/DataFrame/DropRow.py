@@ -6,10 +6,11 @@ import os
 from stat import *
 class DropRow:
     # By Default,this method will only can be used when select a frame from database
-    def __init__(self,Base:str,Frame:str,RowIndex) -> None:
+    def __init__(self,Base:str,Frame:str,RowIndex,user) -> None:
         self.Base = Base
         self.Frame = Frame
         self.RowIndex = RowIndex
+        self.user = user
     def Drop(self):
         """
         Drop a row from a dataframe
@@ -26,6 +27,6 @@ class DropRow:
         message = {
             "execCode":"OK",
             "message":f"row {self.RowIndex} has been droped from {self.Base}.{self.Frame}"
-            
         }
-        return df,json.dumps(message,indent=True,ensure_ascii=True,sort_keys=True)
+        print(json.dumps(message,indent=True,ensure_ascii=True,sort_values=True))
+        return df,f"{self.user} has dropped row {self.RowIndex} from {self.Base}.{self.Frame}"

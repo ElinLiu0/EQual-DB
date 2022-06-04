@@ -17,7 +17,8 @@ class DropDataBase:
         for root,base,frame in os.walk("./Data"):
             for i in base:
                 database_list.append(i)
-        if self.userAuthority == "Admin":
+        try:
+            assert self.userAuthority == "Admin"
             if self.targetBase in database_list:
                 print(f"Database {self.targetBase} has been successfully delete!Operation Done at {datetime.now()}")
                 shutil.rmtree(f'./Data/{self.targetBase}')
@@ -27,4 +28,14 @@ class DropDataBase:
                 }
                 return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
             else:
-                raise FileNotFoundError("Invalid Exists Database name,Drop Failed!")
+                message = {
+                    "execCode":"Failed",
+                    "message":f"Database {self.targetBase} does not exist!"
+                }
+                return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
+        except AssertionError:
+            message = {
+                "execCode":"Failed",
+                "message":f"You are not authorized to delete this database!"
+            }
+            return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)

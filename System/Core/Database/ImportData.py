@@ -29,7 +29,8 @@ class ImportData:
         This function is used to import data from different source and store it in the database.
         :return: A message.
         """
-        if self.userAuthority == "Admin":
+        try:
+            assert self.userAuthority == "Admin"
             if ".csv" in self.sourcePath:
                 df = cf.read_csv(self.sourcePath,encoding=self.encoder)
                 data = df.to_json(orient=True)
@@ -89,7 +90,7 @@ class ImportData:
                 }
                 print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
                 return "Invalid origin data type!"
-        else:
+        except AssertionError:
             message = {
                 'execCode':'Failed',
                 'message':f'Invalid user authority,expecting Admin,buy got {self.userAuthority}.'

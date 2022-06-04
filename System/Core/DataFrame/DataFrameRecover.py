@@ -4,7 +4,7 @@ from shutil import ExecError
 import cudf as cf
 import pickle
 class DataFrameRecover:
-    def __init__(self,targetDataBase,targetDataFrame,authority) -> None:
+    def __init__(self,targetDataBase,targetDataFrame,authority,user) -> None:
         '''This function is used to initialize the class
         
         Parameters
@@ -20,6 +20,7 @@ class DataFrameRecover:
         self.targetDataBase = targetDataBase
         self.targetDataFrame = targetDataFrame
         self.authority = authority
+        self.user = user
     def Recovering(self):
         '''
         Return
@@ -31,7 +32,8 @@ class DataFrameRecover:
         login_user_sys_authority = (
             os.popen(f"groups {login_user_sys}").read().replace(f"{login_user_sys} : ", "").split(" ")
         )
-        if self.authority == "Admin" & "sudo" in login_user_sys_authority:
+        try:
+            assert self.authority == "Admin" & "sudo" in login_user_sys_authority
             with open(f"./Data/{self.targetDataBase}/{self.targetDataFrame}.rc","w") as RecoverReader:
                 read_data = pickle.load(RecoverReader).split("\n","")
                 RecoverData = read_data[1]
@@ -40,8 +42,15 @@ class DataFrameRecover:
             rollBackData = read_data[0][read_data.index(":") : ].replace(" ","")
             message = {
                 "execCode":"OK",
-                "message":f"{self.targetDataFrame} were fall back to the time version : {rollBackData}!Operation Process Done!"
+                "message":f"{self.targetDataFrame} were roll back",
+                "rollBackData":rollBackData
             }
-            return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
-        else:
-            raise ExecError(f"ERR : Not Admin,Operation Refused!")
+            print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
+            return f"{self.targetDataBase}.{self.targetDataFrame} has been roll back to {rollBackData} by {self.user}"
+        except AssertionError:
+            message = {
+                "execCode":"Failed",
+                "message":f"You don't have the authority to do this operation!"
+            }
+            print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
+            return f"{self.user} has trying to roll back dataframe {self.targetDataBase}.{self.targetDataFrame} to {rollBackData} but failed!"

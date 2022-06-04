@@ -6,7 +6,7 @@ import json
 import os
 class AppendData:
     # By Default,this method will only can be used when select a frame from database
-    def __init__(self,Base,Frame,Data) -> None:
+    def __init__(self,Base,Frame,Data,user) -> None:
         '''The __init__ method is the most important method in a class. 
         This is called when an instance (object) of the class is created, using the class name as a
         function
@@ -28,6 +28,7 @@ class AppendData:
             raise TypeError("ERR : Not Receving a dataframe like data!")
         # The appending data should like : [data]
         self.Data = Data
+        self.user = user
     def Append(self):
         '''Append data to a dataframe and create a recovery checkup file
         
@@ -45,4 +46,5 @@ class AppendData:
         if os.path.exists(f"Data/{self.Base}/{self.Frame}.rc"):
             os.chmod(f"Data/{self.Base}/{self.Frame}.rc",S_IREAD)
         message = {"execCode":"OK","message":f"Successfully append data to {self.Base}.{self.Frame}"}
-        return df,json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
+        print(json.dumps(message,indent=True,ensure_ascii=True,sort_keys=True))
+        return df,f"Successfully append data to {self.Base}.{self.Frame} by {self.user}"

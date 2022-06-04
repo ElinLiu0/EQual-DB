@@ -8,10 +8,11 @@ from stat import *
 # Drop a column from a frame.
 class DropColumns:
     # By Default,this method will only can be used when select a frame from database
-    def __init__(self,Base:str,Frame:str,colName) -> None:
+    def __init__(self,Base:str,Frame:str,colName,user) -> None:
         self.Base = Base
         self.Frame = Frame
         self.colName = colName
+        self.user = user
     def Drop(self):
         """
         Drop a column from a dataframe
@@ -29,4 +30,5 @@ class DropColumns:
             "execCode":"OK",
             "message":f"col {self.colName} has been droped from {self.Base}.{self.Frame}"
         }
-        return df,json.dumps(message,indent=True,ensure_ascii=True,sort_values=True)
+        print(json.dumps(message,indent=True,ensure_ascii=True,sort_values=True))
+        return df,f"{self.user} has dropped col {self.colName} from {self.Base}.{self.Frame}"

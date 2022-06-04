@@ -6,7 +6,7 @@ import os
 from stat import *
 import json
 class InsertColumns:
-    def __init__(self,Base:str,Frame:str,colName:str,colData:list) -> None:
+    def __init__(self,Base:str,Frame:str,colName:str,colData:list,user) -> None:
         """
         This function is used to create a new column in the dataframe
         
@@ -23,6 +23,7 @@ class InsertColumns:
         self.Frame = Frame
         self.colName = colName
         self.colData = colData
+        self.user = user
         if type(self.colData) != list:
             raise TypeError("ERR : Uncorrect datatype to insert!")
     def Insert(self):
@@ -45,4 +46,5 @@ class InsertColumns:
             "execCode":"OK",
             "message":f"Successfully insert {self.colName} "
         }
-        return df,json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
+        print(json.dumps(message,indent=True,ensure_ascii=True,sort_values=True))
+        return df,f"{self.user} has inserted {self.colName} into {self.Base}.{self.Frame}"

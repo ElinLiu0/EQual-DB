@@ -1,0 +1,5 @@
+[2022-06-04 15:26:16,430][INFO][root]: user Elin has login to server.
+[2022-06-04 15:26:16,430][INFO][root]: Successfully initialize caching database and dataframe.
+[2022-06-04 15:29:12,241][INFO][root]: User Elin is checking up database info.
+[2022-06-04 15:29:15,131][INFO][root]: user Elin is checking up dataframe info of database None
+[2022-06-04 15:30:07,815][INFO][root]: Error Occurred by <class 'Exception'>

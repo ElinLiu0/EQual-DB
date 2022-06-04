@@ -57,7 +57,8 @@ def Shell():
             # and system will automatically makeing.
             elif re.match("create db",recieve) != None:
                 try:
-                    boot = CreateDataBase(BaseName=recieve[16:],userAuthority=Userinfo['authority'],username=Userinfo['name'])
+                    boot = CreateDataBase(BaseName=recieve[recieve.index("db")+2 :].replace(" ", "")
+                                          ,userAuthority=Userinfo['authority'],username=Userinfo['name'])
                     message = boot.Make()
                     logging.info(message)
                 except Exception as e:

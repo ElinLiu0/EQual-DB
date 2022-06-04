@@ -1,0 +1,4 @@
+[2022-06-04 18:01:00,115][INFO][root]: user Elin has login to server.
+[2022-06-04 18:01:00,115][INFO][root]: Successfully initialize caching database and dataframe.
+[2022-06-04 18:01:03,087][INFO][root]: User Elin is checking up database info.
+[2022-06-04 18:01:35,467][ERROR][root]: cannot unpack non-iterable bool objectin file/root/EQual-DB/EqualDB.pyat204

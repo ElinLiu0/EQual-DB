@@ -3,7 +3,7 @@ import pickle
 import cudf as cf
 import json
 class ShowSelect:
-    def __init__(self,targetBase,targetFrame,colRange,limation) -> None:
+    def __init__(self,targetBase,targetFrame,colRange,limation,user) -> None:
         """
         This function is used to initialize the class, and it would be called in the shell.py.
             The parameters are:
@@ -25,6 +25,7 @@ class ShowSelect:
         self.headers = 'keys'
         self.tablefmt = "psql"
         self.showIndex = True
+        self.user = user
     def read_data(self):
         """
         1. Read the dataframe from the cache base.
