@@ -40,3 +40,5 @@ Also you can join my porject to help me improve EQualDB Better.
     - Rename from JessiseDB into EQualDB yet.
   - 2022/4/25
     - Stable configured.
+  - 2022/6/4
+    - Fixed logs generator.
