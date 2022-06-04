@@ -19,20 +19,23 @@ class ExportCache:
                 "execCode":"OK",
                 "message":f"Successfully export data."
             }
-            return message
+            print(message)
+            return f"{self.name}.{self.format} has been created from cache."
         elif self.format == "JSON" or self.format == "json":
             self.data.to_json(f"Export/{self.name}.json")
             message = {
                 "execCode":"OK",
                 "message":f"Successfully export data."
             }
-            return message
+            print(message)
+            return f"{self.name}.{self.format} has been created from cache."
         elif self.format == "HDF" or self.format == "hdf":
             self.data.to_hdf(f"Export/{self.name}.hdf")
             message = {
                 "execCode":"OK",
                 "message":f"Successfully export data."
             }
-            return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
+            print(message)
+            return f"{self.name}.{self.format} has been created from cache."
         else:
             raise TypeError("Currently unsupport datatype rendered!")

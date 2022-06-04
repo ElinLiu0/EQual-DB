@@ -46,4 +46,10 @@ class ShowDataFrames:
             message = f"user {user} is checking up dataframe info of database {self.targetBase}"
             return message
         except Exception:
-            raise FileNotFoundError("No dataframe exists!")
+            responseJson = {
+                "execCode":"Failed",
+                "DataFramesAre":None
+            }
+            print(json.dumps(responseJson,indent=4,ensure_ascii=True,sort_keys=True))
+            message = f"user {user} is checking up dataframe info of database {self.targetBase}"
+            return message

@@ -39,9 +39,13 @@ class ImportData:
                 recover_writter.close()
                 message = {
                     "execCode":"OK",
-                    "message":f"Successfully import data from {self.sourcePath} and storage at {self.targetDataBase}.{self.frameName},imported by {self.user}"
+                    "message":f"Successfully import data.",
+                    "target":{self.targetDataBase}+'.'+{self.frameName},
+                    'recordsCount':df.shape,
+                    'checkInTime':datetime.now()
                 }
-                return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
+                print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
+                return json.dumps(message)
             if ".hdf" in self.sourcePath:
                 df = cf.read_hdf(self.sourcePath)
                 # dask_proc = pd.from_pandas(tem)
@@ -52,9 +56,13 @@ class ImportData:
                 recover_writter.close()
                 message = {
                     "execCode":"OK",
-                    "message":f"Successfully import data from {self.sourcePath} and storage at {self.targetDataBase}.{self.frameName},imported by {self.user}"
+                    "message":f"Successfully import data.",
+                    "target":{self.targetDataBase}+'.'+{self.frameName},
+                    'recordsCount':df.shape,
+                    'checkInTime':datetime.now()
                 }
-                return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
+                print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
+                return json.dumps(message)
             if ".json" in self.sourcePath:
                 df = cf.read_json(self.sourcePath)
                 # dask_proc = pd.from_pandas(tem)
@@ -65,12 +73,26 @@ class ImportData:
                 recover_writter.close()
                 message = {
                     "execCode":"OK",
-                    "message":f"Successfully import data from {self.sourcePath} and storage at {self.targetDataBase}.{self.frameName},imported by {self.user}"
+                    "message":f"Successfully import data.",
+                    "target":{self.targetDataBase}+'.'+{self.frameName},
+                    'recordsCount':df.shape,
+                    'checkInTime':datetime.now()
                 }
-                return json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True)
+                print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
+                return json.dumps(message)
             if os.path.exists(f"./Data/{self.targetDataBase}/{self.frameName}.rc"):
                     os.chmod(f"./Data/{self.targetDataBase}/{self.frameName}.rc",S_IREAD)
             else:
-                raise TypeError("Unsupported source datatype,refused!")
+                message = {
+                    "execCode":'Failed',
+                    'message':'Invalid origin data types!'
+                }
+                print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
+                return "Invalid origin data type!"
         else:
-            raise ExecError("ERR : Not as a Adminer to do operation,refused!")
+            message = {
+                'execCode':'Failed',
+                'message':f'Invalid user authority,expecting Admin,buy got {self.userAuthority}.'
+            }
+            print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
+            return f'Invalid user authority,expecting Admin,buy got {self.userAuthority}.'

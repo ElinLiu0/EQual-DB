@@ -1,5 +1,5 @@
-from email import message
 import os
+import json
 class UseDataBase:
     def __init__(self,targetBase) -> None:
         """
@@ -21,7 +21,16 @@ class UseDataBase:
             for i in path:
                 DataBaseList.append(i)
         if self.targetBase in DataBaseList:
+            message = {
+                'execCode':'OK',
+                'usedDB':self.targetBase
+            }
+            print(json.dumps(message,indent=4,ensure_ascii=True,sort_keys=True))
             message = f"database {self.targetBase} has been used!"
             return True,message
         else:
+            message = {
+                'execCode':'Failed',
+                'reason':'Database not found in source.'
+            }
             return False
